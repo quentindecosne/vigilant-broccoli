@@ -48,7 +48,7 @@ class ProjectController extends Controller
      */
     public function edit(Project $project)
     {
-        //
+        return True;
     }
 
     /**
@@ -64,7 +64,8 @@ class ProjectController extends Controller
      */
     public function destroy(Project $project)
     {
-        $user = Auth::user();
+        return True;
+      //  $user = Auth::user();
         // if ($user->can('delete projects')){
             
         //     // $count = Survey::where('project_id', $id)->count();
