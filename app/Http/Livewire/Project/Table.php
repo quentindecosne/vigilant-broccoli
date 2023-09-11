@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Livewire;
+namespace App\Http\Livewire\Project;
 
 use App\Models\Project;
 use Illuminate\Support\Carbon;
@@ -11,13 +11,10 @@ use PowerComponents\LivewirePowerGrid\Rules\{Rule, RuleActions};
 use PowerComponents\LivewirePowerGrid\Traits\{ActionButton, WithExport};
 use PowerComponents\LivewirePowerGrid\{Button, Column, Exportable, Footer, Header, PowerGrid, PowerGridComponent, PowerGridColumns};
 
-final class ProjectTable extends PowerGridComponent
+final class Table extends PowerGridComponent
 {
     use ActionButton;
     use WithExport;
-
-
-    public bool $multiSort = true;
 
     
     /*
@@ -34,16 +31,19 @@ final class ProjectTable extends PowerGridComponent
         $this->showCheckBox();
 
         return [
-            // Exportable::make('export')
-            //     ->striped()
-            //     ->type(Exportable::TYPE_XLS, Exportable::TYPE_CSV),
+            Exportable::make('export')
+                ->striped()
+                ->type(Exportable::TYPE_XLS, Exportable::TYPE_CSV),
+
             Header::make()
                 ->showSearchInput()
-                ->withoutLoading()
+                // ->withoutLoading()
                 ->showToggleColumns(),
+
             Footer::make()
                 ->showPerPage()
                 ->showRecordCount(),
+
             Responsive::make(), 
         ];
     }
@@ -149,7 +149,8 @@ final class ProjectTable extends PowerGridComponent
             Column::make('Phone', 'phone')
                 ->sortable()
                 ->searchable(),
-            Column::make('Created at', 'created_at_formatted', 'created_at')
+
+            Column::make('Created', 'created_at_formatted', 'created_at')
                 ->sortable(),
 
         ];
@@ -187,23 +188,14 @@ final class ProjectTable extends PowerGridComponent
      */
 
     
-    // public function actions(): array
-    // {
-    //    return [
-    //        Button::make('edit', 'Edit')
-    //            ->class('bg-indigo-500 cursor-pointer text-white px-3 py-2.5 m-1 rounded text-sm')
-    //            ->route('projects.edit', function(\App\Models\Project $model) {
-    //                 return $model->id;
-    //            }),
-
-    //        Button::make('destroy', 'Delete')
-    //            ->class('bg-red-500 cursor-pointer text-white px-3 py-2 m-1 rounded text-sm')
-    //            ->route('projects.destroy', function(\App\Models\Project $model) {
-    //                 return $model->id;
-    //            })
-    //            ->method('delete')
-    //     ];
-    // }
+    public function actions(): array
+    {
+       return [
+           Button::make('destroy', 'Delete')
+               ->class('bg-red-500 cursor-pointer text-white px-3 py-2 m-1 rounded text-sm')
+               ->openModal('project.delete', ['project' => 'id',]),
+        ];
+    }
     
 
     /*
@@ -233,5 +225,21 @@ final class ProjectTable extends PowerGridComponent
                 
     //     ];
     // }
+
+    protected function getListeners()
+    {
+        return array_merge(
+            parent::getListeners(),
+            [
+                'refreshTable',
+            ]
+        );
+    }
+
+
+    public function refreshTable(): void
+    {
+       $this->emit('pg:eventRefresh-default');
+    }
     
 }
