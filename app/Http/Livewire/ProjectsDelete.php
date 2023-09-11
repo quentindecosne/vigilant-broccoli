@@ -20,7 +20,7 @@ class ProjectsDelete extends ModalComponent
         return view('livewire.projects-delete', ['project'=> $this->project, 'formAction'=> 'destroy']);
     }    
 
-    public function destroy(){
+    public function delete(){
         try{
             $this->project->delete();
             $this->emit('refreshTable');
