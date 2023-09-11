@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Livewire\Project;
+namespace App\Http\Livewire;
 
 use App\Models\Project;
 use Illuminate\Support\Carbon;
@@ -11,7 +11,7 @@ use PowerComponents\LivewirePowerGrid\Rules\{Rule, RuleActions};
 use PowerComponents\LivewirePowerGrid\Traits\{ActionButton, WithExport};
 use PowerComponents\LivewirePowerGrid\{Button, Column, Exportable, Footer, Header, PowerGrid, PowerGridComponent, PowerGridColumns};
 
-final class Table extends PowerGridComponent
+final class ProjectsTable extends PowerGridComponent
 {
     use ActionButton;
     use WithExport;
@@ -38,7 +38,8 @@ final class Table extends PowerGridComponent
             Header::make()
                 ->showSearchInput()
                 // ->withoutLoading()
-                ->showToggleColumns(),
+                ->showToggleColumns()
+                ->includeViewOnTop('project.header-top'),
 
             Footer::make()
                 ->showPerPage()
@@ -102,8 +103,7 @@ final class Table extends PowerGridComponent
             ->addColumn('id')
             ->addColumn('name')
 
-           /** Example of custom column using a closure **/
-            ->addColumn('name_lower', fn (Project $model) => strtolower(e($model->name)))
+            ->addColumn('contact', fn (Project $model) => strtolower(e($model->name)))
 
             ->addColumn('contact')
             ->addColumn('address')
@@ -193,7 +193,7 @@ final class Table extends PowerGridComponent
        return [
            Button::make('destroy', 'Delete')
                ->class('bg-red-500 cursor-pointer text-white px-3 py-2 m-1 rounded text-sm')
-               ->openModal('project.delete', ['project' => 'id',]),
+               ->openModal('projects-delete', ['project' => 'id',]),
         ];
     }
     

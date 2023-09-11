@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Livewire\Project;
+namespace App\Http\Livewire;
 
 use App\Models\Project;
 use Livewire\Component;
@@ -8,11 +8,19 @@ use LivewireUI\Modal\ModalComponent;
 use WireUi\Traits\Actions;
 
 
-class Delete extends ModalComponent
+class ProjectsDelete extends ModalComponent
 {
 
     use Actions;
     public Project $project;
+
+    public $isOpen = false;
+
+
+    public function render()
+    {
+        return view('livewire.projects-delete', ['project'=> $this->project, 'formAction'=> 'destroy']);
+    }    
 
     public function destroy(){
         try{
@@ -32,8 +40,5 @@ class Delete extends ModalComponent
     }
 
 
-    public function render()
-    {
-        return view('livewire.project.delete', ['project'=> $this->project, 'formAction'=> 'destroy']);
-    }
+
 }
