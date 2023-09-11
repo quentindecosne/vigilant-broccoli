@@ -14,8 +14,6 @@ class ProjectsDelete extends ModalComponent
     use Actions;
     public Project $project;
 
-    public $isOpen = false;
-
 
     public function render()
     {
