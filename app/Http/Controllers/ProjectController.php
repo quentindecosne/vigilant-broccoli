@@ -14,7 +14,7 @@ class ProjectController extends Controller
      */
     public function index()
     {
-        return view('projects.index');
+        return view('project.index');
     }
 
     /**
@@ -31,7 +31,6 @@ class ProjectController extends Controller
     public function store(StoreProjectRequest $request)
     {
         Project::create($request->validated());
-        // notify()->success('Project created!');
         return redirect('/projects');
     }
 
@@ -40,7 +39,7 @@ class ProjectController extends Controller
      */
     public function show(Project $project)
     {
-        return view('projects.show', compact('project'));
+        return view('project.show', compact('project'));
     }
 
     /**
@@ -48,7 +47,7 @@ class ProjectController extends Controller
      */
     public function edit(Project $project)
     {
-        //
+        return True;
     }
 
     /**
@@ -59,22 +58,4 @@ class ProjectController extends Controller
         //
     }
 
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(Project $project)
-    {
-        $user = Auth::user();
-        // if ($user->can('delete projects')){
-            
-        //     // $count = Survey::where('project_id', $id)->count();
-
-        //     // if ($count > 0)
-        //     //     return redirect(route('projects'))->with('error', trans("this project has surveys"));
-
-        //     Project::destroy($project);
-        //     return redirect(route('projects'))->with('success', trans('app.record_deleted', ['field' => 'project']));
-        // }
-        // return abort(403, trans('error.unauthorized'));
-    }
 }
