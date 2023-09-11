@@ -13,18 +13,12 @@ class Delete extends ModalComponent
 
     use Actions;
     public Project $project;
-    
-    public function mount(Project $project)
-    {
-        $this->project = $project;
-    }
 
     public function destroy(){
         try{
-            //$this->project->delete();
+            $this->project->delete();
             $this->emit('refreshTable');
             $this->closeModal();
-            // $this->dispatchBrowserEvent('notify','Project has been deleted');
             $this->notification()->info(
                 $title = 'Project deleted',
                 $description = 'Your project was successfully deleted'
@@ -34,7 +28,6 @@ class Delete extends ModalComponent
                 $title = 'Error Notification',
                 $description = 'Problem deleting, try again later.'
             );
-            // notify()->error('toast_error', 'Problem deleting, try again later.');
         }
     }
 
