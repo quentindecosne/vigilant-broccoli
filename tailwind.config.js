@@ -16,6 +16,7 @@ export default {
         './vendor/wireui/wireui/resources/**/*.blade.php',
         './vendor/wireui/wireui/ts/**/*.ts',
         './vendor/wireui/wireui/src/View/**/*.php',
+        "./vendor/wire-elements/modal/src/ModalComponent.php"
     ],
 
     presets: [

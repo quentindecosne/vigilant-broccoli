@@ -3,14 +3,11 @@
 namespace App\Http\Livewire;
 
 use App\Models\Project;
-use Livewire\Component;
 use LivewireUI\Modal\ModalComponent;
 use WireUi\Traits\Actions;
 
-
 class ProjectsDelete extends ModalComponent
 {
-
     use Actions;
     public Project $project;
 
