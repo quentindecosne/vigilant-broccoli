@@ -6,7 +6,7 @@ use App\Models\Project;
 use LivewireUI\Modal\ModalComponent;
 use WireUi\Traits\Actions;
 
-class ProjectsCreate extends ModalComponent
+class ProjectsSave extends ModalComponent
 {
     use Actions;
     public Project $project;
@@ -34,7 +34,7 @@ class ProjectsCreate extends ModalComponent
 
     public function render()
     {
-        return view('livewire.projects-create');
+        return view('livewire.projects-save');
     }
 
     public function save(){
