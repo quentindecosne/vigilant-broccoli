@@ -14,7 +14,7 @@ class ProjectsDelete extends ModalComponent
 
     public function render()
     {
-        return view('livewire.projects-delete', ['project'=> $this->project, 'formAction'=> 'destroy']);
+        return view('livewire.projects-delete');
     }    
 
     public function delete(){

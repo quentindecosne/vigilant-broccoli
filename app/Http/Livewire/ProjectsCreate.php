@@ -9,8 +9,9 @@ use WireUi\Traits\Actions;
 class ProjectsCreate extends ModalComponent
 {
     use Actions;
-    // public Project $project;
-    public $name, $contact, $email, $phone, $address;
+    public Project $project;
+
+    public $name, $contact, $email, $phone, $address, $project_id;
 
 
     /**
@@ -19,6 +20,16 @@ class ProjectsCreate extends ModalComponent
     protected $rules = [
         'name' => 'required',
     ];
+
+    public function mount(Project $project)
+    {
+        $this->project_id = $project->id;
+        $this->name = $project->name;
+        $this->contact = $project->contact;
+        $this->email = $project->email;
+        $this->phone = $project->phone;
+        $this->address = $project->address;
+    }
 
 
     public function render()
@@ -41,6 +52,31 @@ class ProjectsCreate extends ModalComponent
             $this->notification()->info(
                 $title = 'Project deleted',
                 $description = 'Your project was successfully created'
+            );
+        } catch (\Exception $ex) {
+            $this->notification()->error(
+                $title = 'Error Notification',
+                $description = 'Problem creating the new project, try again later.'
+            );
+        }
+    }
+
+    public function edit(Project $project){
+        $this->validate();
+        try {
+            $project = Project::findOrFail($this->project_id);
+            $project->name = $this->name;
+            $project->contact = $this->contact;
+            $project->email = $this->email;
+            $project->phone = $this->phone;
+            $project->address = $this->address;
+            $project->update();
+          
+            $this->emit('refreshTable');
+            $this->closeModal();
+            $this->notification()->info(
+                $title = 'Project deleted',
+                $description = 'Your project was successfully updated'
             );
         } catch (\Exception $ex) {
             $this->notification()->error(

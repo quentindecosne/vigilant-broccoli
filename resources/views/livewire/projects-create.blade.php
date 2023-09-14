@@ -64,7 +64,11 @@
         </div>
     </div>
     <div class="bg-gray-50 px-4 py-3 sm:px-6 sm:flex sm:flex-row-reverse">
-        <button wire:click="save()" class="modal-action-button modal-save-button">Save</button>
+        @if ($project)
+        <button wire:click="edit()" class="modal-action-button modal-save-button">Edit</button>
+        @else
+          <button wire:click="save()" class="modal-action-button modal-save-button">Save</button>
+        @endif      
         <button wire:click="$emit('closeModal')"  type="button" class="modal-cancel-button">Cancel</button>
     </div>
 </div>
