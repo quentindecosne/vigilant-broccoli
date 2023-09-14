@@ -50,7 +50,7 @@ class ProjectsSave extends ModalComponent
             $this->emit('refreshTable');
             $this->closeModal();
             $this->notification()->info(
-                $title = 'Project deleted',
+                $title = 'Project created',
                 $description = 'Your project was successfully created'
             );
         } catch (\Exception $ex) {
