@@ -39,7 +39,7 @@ class SurveysSave extends ModalComponent
 
     public function save(){
         $this->validate();
-        // try {
+        try {
             Survey::create([
                 'name' => $this->name,
                 'project_id' => $this->project_id,
@@ -50,11 +50,11 @@ class SurveysSave extends ModalComponent
                 $title = 'Survey created',
                 $description = 'Your survey was successfully created'
             );
-        // } catch (\Exception $ex) {
-        //     $this->notification()->error(
-        //         $title = 'Error Notification',
-        //         $description = 'Problem creating the new survey, try again later.'
-        //     );
-        // }
+        } catch (\Exception $ex) {
+            $this->notification()->error(
+                $title = 'Error Notification',
+                $description = 'Problem creating the new survey, try again later.'
+            );
+        }
     }
 }
