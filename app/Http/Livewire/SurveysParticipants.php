@@ -16,9 +16,12 @@ class SurveysParticipants extends ModalComponent
     use Actions;
     public Survey $survey;
     public $participants;
+    public $users;
+    public $add_user;
 
     public function mount()
     {
+        $this->users = User::get();
         $this->participants = [];
         if ($this->survey->participants){
             $participants = Str::of($this->survey->participants)->explode(',');
@@ -32,6 +35,12 @@ class SurveysParticipants extends ModalComponent
     public function render()
     {
         return view('livewire.surveys-participants');
+    }
+
+    public function addParticipant()
+    {
+        $user = User::where('id','=', $this->add_user)->get(['id', 'name', 'email'])->firstOrFail();
+        $this->participants = Arr::prepend($this->participants,$user);
     }
 
     public function deleteParticipant($participantId)
@@ -49,13 +58,13 @@ class SurveysParticipants extends ModalComponent
                 $this->survey->save();
                 $this->closeModal();
                 $this->notification()->info(
-                    $title = 'Participant removed',
-                    $description = 'The participant was successfully removed'
+                    $title = 'Participants saved',
+                    $description = 'The participants were successfully updated'
                 );
             } catch (\Exception $ex) {
                 $this->notification()->error(
                     $title = 'Error Notification',
-                    $description = 'Problem deleting the participant, try again later.'
+                    $description = 'Problem saving the participants, try again later.'
                 );
             }
         }
