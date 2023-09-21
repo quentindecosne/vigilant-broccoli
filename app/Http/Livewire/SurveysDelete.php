@@ -19,9 +19,11 @@ class SurveysDelete extends ModalComponent
 
     public function delete(){
         try{
+            $survey = $this->survey;
             $this->survey->delete();
             $this->emit('refreshTable');
             $this->closeModal();
+            activity('recent')->event('warning')->withProperties(['survey' => $survey->name, 'survey_id' => $survey->id])->log(':causer.name has deleted the survey: :properties.survey');
             $this->notification()->info(
                 $title = 'Survey deleted',
                 $description = 'Your survey was successfully deleted'

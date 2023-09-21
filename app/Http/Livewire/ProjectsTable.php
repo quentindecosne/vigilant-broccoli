@@ -109,7 +109,7 @@ final class ProjectsTable extends PowerGridComponent
             ->addColumn('address')
             ->addColumn('email')
             ->addColumn('phone')
-            ->addColumn('created_at_formatted', fn (Project $model) => Carbon::parse($model->created_at)->format('d/m/Y H:i:s'));
+            ->addColumn('created_at_formatted', fn (Project $model) => Carbon::parse($model->created_at)->format('d/m/Y'));
     }
 
     /*

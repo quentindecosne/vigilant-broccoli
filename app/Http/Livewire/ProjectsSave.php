@@ -49,6 +49,7 @@ class ProjectsSave extends ModalComponent
             ]);
             $this->emit('refreshTable');
             $this->closeModal();
+            activity('recent')->event('success')->withProperties(['project' => $this->name, 'project_id' => $this->project_id])->log(':causer.name has created the project: :properties.project');
             $this->notification()->info(
                 $title = 'Project created',
                 $description = 'Your project was successfully created'
@@ -74,6 +75,7 @@ class ProjectsSave extends ModalComponent
           
             $this->emit('refreshTable');
             $this->closeModal();
+            activity('recent')->event('info')->withProperties(['project' => $this->name, 'project_id' => $this->project_id])->log(':causer.name has modified the project: :properties.project');
             $this->notification()->info(
                 $title = 'Project deleted',
                 $description = 'Your project was successfully updated'

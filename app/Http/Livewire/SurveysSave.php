@@ -46,6 +46,7 @@ class SurveysSave extends ModalComponent
             ]);
             $this->emit('refreshTable');
             $this->closeModal();
+            activity('recent')->event('success')->withProperties(['survey' => $this->name])->log(':causer.name has created the survey: :properties.survey');
             $this->notification()->info(
                 $title = 'Survey created',
                 $description = 'Your survey was successfully created'

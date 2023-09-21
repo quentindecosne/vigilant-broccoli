@@ -71,7 +71,7 @@ final class SurveysTable extends PowerGridComponent
                 'surveys.project_id',
                 'surveys.name',
                 'surveys.created_at',
-                'projects.name as project_name',
+                'projects.name as project_name'
             ]);
     }
 
@@ -112,10 +112,10 @@ final class SurveysTable extends PowerGridComponent
     {
         return PowerGrid::columns()
             ->addColumn('id')
-            ->addColumn('survey_name')
             ->addColumn('project_name', function (Survey $model) {
                     return '<a href="'.route("projects.show", $model->project->id).'">'. e($model->project->name) .'</a>'; 
                 })
+            ->addColumn('survey_name')
             ->addColumn('created_at_formatted', fn (Survey $model) => Carbon::parse($model->created_at)->format('d/m/Y'));
     }
 
