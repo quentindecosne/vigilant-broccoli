@@ -5,6 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 
 class Survey extends Model
 {
@@ -19,5 +20,13 @@ class Survey extends Model
     public function project(): BelongsTo
     {
         return $this->belongsTo(Project::class);
+    }
+
+    /**
+     * Get the users participating to that survey.
+     */
+    public function participants(): BelongsToMany
+    {
+        return $this->belongsToMany(User::class);
     }
 }

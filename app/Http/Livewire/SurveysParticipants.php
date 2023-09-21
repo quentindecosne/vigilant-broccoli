@@ -4,11 +4,11 @@ namespace App\Http\Livewire;
 
 use App\Models\User;
 use App\Models\Survey;
-use DebugBar\DebugBar;
 use WireUi\Traits\Actions;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Str;
 use LivewireUI\Modal\ModalComponent;
+
 
 class SurveysParticipants extends ModalComponent
 {
@@ -23,12 +23,10 @@ class SurveysParticipants extends ModalComponent
     {
         $this->users = User::get();
         $this->participants = [];
-        if ($this->survey->participants){
-            $participants = Str::of($this->survey->participants)->explode(',');
-            foreach($participants as $participant){
-                $user = User::where('id','=', $participant)->get(['id', 'name', 'email'])->firstOrFail();
-                $this->participants = Arr::prepend($this->participants,$user);
-            }
+        $survey = Survey::with('participants')->where('id', '=', $this->survey->id)->get();
+        $participants = $survey->flatMap->participants;
+        foreach($participants as $user){
+            $this->participants = Arr::prepend($this->participants, $user);
         }
     }
 
@@ -39,8 +37,10 @@ class SurveysParticipants extends ModalComponent
 
     public function addParticipant()
     {
-        $user = User::where('id','=', $this->add_user)->get(['id', 'name', 'email'])->firstOrFail();
-        $this->participants = Arr::prepend($this->participants,$user);
+        if (!Arr::has($this->participants, $this->add_user)){
+            $user = User::where('id','=', $this->add_user)->get(['id', 'name', 'email'])->firstOrFail();
+            $this->participants = Arr::prepend($this->participants,$user);
+        }
     }
 
     public function deleteParticipant($participantId)
@@ -54,17 +54,16 @@ class SurveysParticipants extends ModalComponent
     public function save(){
         if ($this->participants){
             try {
-                $this->survey->participants = implode(',', array_column($this->participants, 'id'));
-                $this->survey->save();
+                $this->survey->participants()->sync(array_column($this->participants, 'id'));
                 $this->closeModal();
                 $this->notification()->info(
-                    $title = 'Participants saved',
+                    $title = 'Participants updated',
                     $description = 'The participants were successfully updated'
                 );
             } catch (\Exception $ex) {
                 $this->notification()->error(
                     $title = 'Error Notification',
-                    $description = 'Problem saving the participants, try again later.'
+                    $description = 'Problem updating the participants, try again later.'
                 );
             }
         }
