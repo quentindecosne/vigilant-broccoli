@@ -16,9 +16,6 @@ final class SurveysTable extends PowerGridComponent
     use ActionButton;
     use WithExport;
 
-
-
-
     /*
     |--------------------------------------------------------------------------
     |  Features Setup
@@ -116,7 +113,9 @@ final class SurveysTable extends PowerGridComponent
         return PowerGrid::columns()
             ->addColumn('id')
             ->addColumn('survey_name')
-            ->addColumn('project_name')
+            ->addColumn('project_name', function (Survey $model) {
+                    return '<a href="'.route("projects.show", $model->project->id).'">'. e($model->project->name) .'</a>'; 
+                })
             ->addColumn('created_at_formatted', fn (Survey $model) => Carbon::parse($model->created_at)->format('d/m/Y'));
     }
 
@@ -137,13 +136,14 @@ final class SurveysTable extends PowerGridComponent
     public function columns(): array
     {
         return [
-            Column::make('Id', 'id'),
+            Column::make('Id', 'id')->hidden(),
+            Column::make('Project', 'project_name')
+            ->sortable(),
+            // ->searchable()
             Column::make('Name', 'name')
                 ->sortable()
                 ->searchable(),
-            Column::make('Project', 'project_name')
-                ->sortable(),
-                // ->searchable()
+
             Column::make('Created at', 'created_at_formatted', 'surveys.created_at')
                 ->sortable()
 
