@@ -3,6 +3,7 @@
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\UserController;
+use App\Http\Controllers\PlantSurveyUserController;
 
 
 /*
@@ -21,3 +22,4 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 });
 
 Route::get('/user/{user_email}', [UserController::class, 'getByUserEmail']);
+Route::get('/survey-plants/{survey_id}', [PlantSurveyUserController::class, 'show']);
