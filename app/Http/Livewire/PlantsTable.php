@@ -16,6 +16,10 @@ final class PlantsTable extends PowerGridComponent
     use ActionButton;
     use WithExport;
 
+    public string $sortField = 'botanical_name';
+    
+    public string $sortDirection = 'asc';
+
     /*
     |--------------------------------------------------------------------------
     |  Features Setup
@@ -109,7 +113,7 @@ final class PlantsTable extends PowerGridComponent
             </svg>
             ');
             })
-            ->addColumn('created_at_formatted', fn (Plant $model) => Carbon::parse($model->created_at)->format('d/m/Y H:i:s'));
+            ->addColumn('created_at_formatted', fn (Plant $model) => Carbon::parse($model->created_at)->format('d/m/Y'));
     }
 
     /*
@@ -139,8 +143,8 @@ final class PlantsTable extends PowerGridComponent
                 ->sortable()
                 ->searchable(),
             Column::make('Plantekey', 'plantekey_id'),
-            Column::make('Created at', 'created_at_formatted', 'created_at')
-                ->hidden()
+            Column::make('Added', 'created_at_formatted', 'created_at')
+                // ->hidden()
                 ->sortable(),
 
         ];
