@@ -42,7 +42,7 @@
                     @foreach ($activity as $log) 
                     <tr class="bg-white">
                       <td class="max-w-0 w-full px-6 py-4 whitespace-nowrap text-sm text-gray-900">
-                        @if ($log->event == "success")
+                       
                             <div class="flex">
                                 @if (isset($log->properties['project_id']))
                                     <a href="{{ route('projects.show', $log->properties['project_id']) }}" class="group inline-flex space-x-2 truncate text-sm">
@@ -62,9 +62,7 @@
                                     <p class="text-gray-500 truncate group-hover:text-gray-900">{{ $log->description}}</p>
                                 @endif
                             </div>
-                        @else
-                        <p class="text-gray-500 truncate group-hover:text-gray-900">{{ $log->description}}</p>
-                        @endif
+     
                       </td>
                       {{-- <td class="px-6 py-4 text-right whitespace-nowrap text-sm text-gray-500">
                         <span class="text-gray-900 font-medium">{{ $log->causer->name }}</span>
