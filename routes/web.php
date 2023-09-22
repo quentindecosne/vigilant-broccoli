@@ -2,6 +2,7 @@
 
 use Illuminate\Support\Facades\Route;
 use Spatie\Activitylog\Models\Activity;
+use App\Http\Controllers\PlantController;
 use App\Http\Controllers\SurveyController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\ProjectController;
@@ -22,9 +23,10 @@ Route::get('/', function () {
 });
 
 Route::get('/dashboard', function () {
-    $activity = Activity::inLog('recent')->with('causer')->orderBy('created_at','desc')->limit(50)->get();
+    $activity = Activity::inLog('recent')->with('causer')->orderBy('created_at','desc')->limit(10)->get();
     return view('dashboard', ['activity' => $activity]);
 })->middleware(['auth', 'verified'])->name('dashboard');
+
 
 Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
@@ -33,6 +35,7 @@ Route::middleware('auth')->group(function () {
 
     Route::resource('projects', ProjectController::class);
     Route::resource('surveys', SurveyController::class);
+    Route::resource('plants', PlantController::class);
 });
 
 require __DIR__.'/auth.php';
