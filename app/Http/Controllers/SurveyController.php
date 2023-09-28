@@ -15,5 +15,9 @@ class SurveyController extends Controller
         return view('survey.index');
     }
 
-    
+    public function show(Survey $survey)
+    {
+        $survey = Survey::find($survey->id);
+        return view('survey.show', ['survey'=> $survey]);
+    }
 }
