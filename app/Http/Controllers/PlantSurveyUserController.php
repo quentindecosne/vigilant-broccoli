@@ -8,10 +8,10 @@ use Illuminate\Http\Request;
 class PlantSurveyUserController extends Controller
 {
 
-    public function show($id)
+    public function show($survey_id, $participant_email)
     {
         $plants = new PlantSurveyUser; 
-        return $plants->getPlantsBySurveyId($id);
+        return $plants->getPlantsBySurveyId($survey_id, $participant_email);
     }
     // /**
     //  * Display a listing of the resource.

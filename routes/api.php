@@ -22,4 +22,4 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 });
 
 Route::get('/user/{user_email}', [UserController::class, 'getByUserEmail']);
-Route::get('/survey-plants/{survey_id}', [PlantSurveyUserController::class, 'show']);
+Route::get('/survey-plants/{survey_id}/{participant_email}', [PlantSurveyUserController::class, 'show']);

@@ -13,13 +13,17 @@ class PlantSurveyUser extends Model
     use HasFactory;
 
 
-    public function getPlantsBySurveyId($id)
+    public function getPlantsBySurveyId($id, $user_email)
     {
         $plants = [];
         $plants_list = DB::table('plant_survey_user')
         ->join('plants', 'plants.id', '=', 'plant_survey_user.plant_id')
+        ->join('users', 'users.id', '=', 'plant_survey_user.user_id')
         ->select('plant_survey_user.id', 'plants.botanical_name', 'plant_survey_user.number_present', 'plant_survey_user.occurrence', 'plant_survey_user.regeneration', 'plant_survey_user.note')
+        ->where('users.email', 'like', $user_email)
+        ->where('plant_survey_user.survey_id', '=', $id)
         ->get();
+
         foreach ($plants_list as $plant){
             $names = explode(" ", strtolower($plant->botanical_name));
             $plants[]['plant_id'] = $plant->id;
