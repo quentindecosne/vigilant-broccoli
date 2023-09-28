@@ -2,11 +2,12 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\User;
 use Illuminate\Http\Request;
 use App\Models\PlantSurveyUser;
-use Illuminate\Support\Facades\DB;
 
 use function PHPSTORM_META\map;
+use Illuminate\Support\Facades\DB;
 
 class PlantSurveyUserController extends Controller
 {
@@ -36,21 +37,20 @@ class PlantSurveyUserController extends Controller
      */
     public function store(Request $request)
     {
-        // dd($request);
-        // Verifiy if user is part of the survey
+        $user = User::where('email', 'like',$request->participant_email)->first();
         $survey = DB::table('survey_user')
-        ->join('users', 'users.id', '=', 'survey_user.user_id')
-        ->where('users.email', 'like', $request->participant_email)
+        ->join('surveys', 'surveys.id', '=', 'survey_user.survey_id')
+        ->where('survey_user.user_id', '=', $user->id)
         ->where('survey_user.survey_id', '=', $request->survey_id)
-        ->select('survey_user.id','survey_user.survey_id','survey_user.user_id')
+        ->select('survey_user.id','survey_user.survey_id','survey_user.user_id', 'surveys.name')
         ->first();
         if ($survey){
             $plant_survey = new PlantSurveyUser;
-            // Clear plants for the survey for the user
             $plant_survey->deletePlantsBySurveyId($survey->survey_id, $survey->user_id);
-
-            // Add plants
             $plant_survey->storePlantsBySurveyId($survey->survey_id, $survey->user_id, json_decode($request->plants));
+            
+            activity('recent')->by($user)->event('success')->withProperties(['survey' => $survey->name, 'survey_id' => $survey->id])->log(':causer.name has submitted their survey: :properties.survey');
+
             return response()->json([
                 'message' => 'survey saved successfully',
                 'code' => 200
