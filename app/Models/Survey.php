@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Models\PlantSurveyUser;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -29,4 +30,6 @@ class Survey extends Model
     {
         return $this->belongsToMany(User::class);
     }
+
+    
 }
