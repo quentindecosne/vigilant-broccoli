@@ -36,7 +36,7 @@ final class SurveysTable extends PowerGridComponent
 
             Header::make()
                 ->showSearchInput()
-                ->showToggleColumns()
+                // ->showToggleColumns()
                 ->includeViewOnTop('survey.datatable-header'),
 
             Footer::make()

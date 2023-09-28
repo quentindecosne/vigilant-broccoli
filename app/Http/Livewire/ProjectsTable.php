@@ -38,7 +38,7 @@ final class ProjectsTable extends PowerGridComponent
             Header::make()
                 ->showSearchInput()
                 // ->withoutLoading()
-                ->showToggleColumns()
+                // ->showToggleColumns()
                 ->includeViewOnTop('project.datatable-header'),
 
             Footer::make()
