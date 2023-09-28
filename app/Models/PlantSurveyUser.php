@@ -2,15 +2,17 @@
 
 namespace App\Models;
 
+use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
-use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 
 class PlantSurveyUser extends Model
 {
     use HasFactory;
+
+    protected $table = 'plant_survey_user';
+    protected $fillable = ['survey_id', 'user_id', 'plant_id', 'number_present', 'occurrence', 'regeneration', 'note'];
 
 
     public function getPlantsBySurveyId($id, $user_email)
@@ -26,31 +28,37 @@ class PlantSurveyUser extends Model
 
         foreach ($plants_list as $plant){
             $names = explode(" ", strtolower($plant->botanical_name));
-            $plants[]['plant_id'] = $plant->id;
-            $plants[]['plant_genus'] = $names[0];
-            $plants[]['plant_species'] = $names[1];
-            $plants[]['number_present'] = $plant->number_present ? $plant->number_present : 0;
-            $plants[]['occurrence'] = $plant->occurrence ? $plant->occurrence : '';
-            $plants[]['regeneration'] = $plant->regeneration ? $plant->regeneration : '';;
-            $plants[]['note'] = $plant->note ? $plant->note : '';;
-
+            $arr['plant_id'] = $plant->id;
+            $arr['plant_genus'] = $names[0];
+            $arr['plant_species'] = $names[1];
+            $arr['number_present'] = $plant->number_present ? $plant->number_present : 0;
+            $arr['occurrence'] = $plant->occurrence ? $plant->occurrence : '';
+            $arr['regeneration'] = $plant->regeneration ? $plant->regeneration : '';;
+            $arr['note'] = $plant->note ? $plant->note : '';;
+            $plants = Arr::prepend($plants, $arr);
         }
         return $plants;
     }
 
-    // /**
-    //  * Get the surveys with this plant.
-    //  */
-    // public function surveys(): BelongsToMany
-    // {
-    //     return $this->belongsToMany(Survey::class);
-    // }
+    public function storePlantsBySurveyId($survey_id, $user_id, $plants)
+    {
+        foreach($plants as $plant){
+            PlantSurveyUser::create([
+                'survey_id' => $survey_id,
+                'user_id' => $user_id,
+                'plant_id' => $plant->plant_id,
+                'number_present' => $plant->number_present,
+                'occurrence' => $plant->occurrence,
+                'regeneration' => $plant->regeneration,
+                'note' => $plant->note,
+            ]);
+        }
+    }
 
-    // /**
-    //  * Get the surveys for the project.
-    //  */
-    // public function plants(): HasMany
-    // {
-    //     return $this->hasMany(Plant::class);
-    // }
+
+    public function deletePlantsBySurveyId($id, $user_id)
+    {
+        return PlantSurveyUser::where('survey_id', '=', $id)->where('user_id', '=', $user_id)->delete();
+    }
+
 }
