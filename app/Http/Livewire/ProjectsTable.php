@@ -101,7 +101,9 @@ final class ProjectsTable extends PowerGridComponent
     {
         return PowerGrid::columns()
             ->addColumn('id')
-            ->addColumn('name')
+            ->addColumn('name', function (Project $model) {
+                return '<a href="'.route('projects.show',$model->id ).'">'. e($model->name) .'</a>'; 
+            })
 
             ->addColumn('contact', fn (Project $model) => strtolower(e($model->name)))
 
