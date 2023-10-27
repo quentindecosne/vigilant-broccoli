@@ -2,11 +2,10 @@
 
 namespace App\Http\Controllers;
 
+use Carbon\Carbon;
 use App\Models\User;
 use Illuminate\Http\Request;
 use App\Models\PlantSurveyUser;
-
-use function PHPSTORM_META\map;
 use Illuminate\Support\Facades\DB;
 
 class PlantSurveyUserController extends Controller
@@ -18,7 +17,7 @@ class PlantSurveyUserController extends Controller
         $plants = $survey_plants->getPlantsBySurveyId($survey_id, $participant_email);
         if ($plants)
             return $plants;
-            
+
         return response()->json([
             'message' => 'You are not authorized to access this survey',
             'code' => 401
@@ -48,12 +47,14 @@ class PlantSurveyUserController extends Controller
             $plant_survey = new PlantSurveyUser;
             $plant_survey->deletePlantsBySurveyId($survey->survey_id, $survey->user_id);
             $plant_survey->storePlantsBySurveyId($survey->survey_id, $survey->user_id, json_decode($request->plants));
-            
+            $completed_at = Carbon::now();
+            $result = DB::table('survey_user')->where('id', '=', $survey->id)->update(['surveyed_at' => $request->surveyed_at, 'completed_at' => $completed_at]);
             activity('recent')->by($user)->event('success')->withProperties(['survey' => $survey->name, 'survey_id' => $survey->id])->log(':causer.name has submitted their survey: :properties.survey');
 
             return response()->json([
                 'message' => 'survey saved successfully',
-                'code' => 200
+                'code' => 200,
+                'data' => ['completed_at' => $completed_at]
             ], 200);
         }
         return response()->json([
