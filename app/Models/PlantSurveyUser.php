@@ -2,12 +2,13 @@
 
 namespace App\Models;
 
-use App\Models\Survey;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+
+use function PHPUnit\Framework\isEmpty;
 
 class PlantSurveyUser extends Model
 {
@@ -28,18 +29,34 @@ class PlantSurveyUser extends Model
         ->where('plant_survey_user.survey_id', '=', $id)
         ->get();
 
-        foreach ($plants_list as $plant){
-            $names = explode(" ", strtolower($plant->botanical_name));
-            $arr['plant_id'] = $plant->id;
-            $arr['plant_genus'] = $names[0];
-            $arr['plant_species'] = $names[1];
-            $arr['number_present'] = $plant->number_present ? $plant->number_present : 0;
-            $arr['occurrence'] = $plant->occurrence ? $plant->occurrence : '';
-            $arr['regeneration'] = $plant->regeneration ? $plant->regeneration : '';;
-            $arr['note'] = $plant->note ? $plant->note : '';;
-            $plants = Arr::prepend($plants, $arr);
+        if (!$plants_list->isEmpty()){
+            foreach ($plants_list as $plant){
+                $names = explode(" ", strtolower($plant->botanical_name));
+                $arr['plant_id'] = $plant->id;
+                $arr['plant_genus'] = $names[0];
+                $arr['plant_species'] = $names[1];
+                $arr['number_present'] = $plant->number_present ? $plant->number_present : 0;
+                $arr['occurrence'] = $plant->occurrence ? $plant->occurrence : '';
+                $arr['regeneration'] = $plant->regeneration ? $plant->regeneration : '';
+                $arr['note'] = $plant->note ? $plant->note : '';;
+                $plants = Arr::prepend($plants, $arr);
+            }
         }
-        return $plants;
+        else{
+            $plants_list = DB::table('plants')->get();
+            foreach ($plants_list as $plant){
+                $names = explode(" ", strtolower($plant->botanical_name));
+                $arr['plant_id'] = $plant->id;
+                $arr['plant_genus'] = $names[0];
+                $arr['plant_species'] = $names[1];
+                $arr['number_present'] = 0;
+                $arr['occurrence'] = '';
+                $arr['regeneration'] = '';;
+                $arr['note'] = '';;
+                $plants = Arr::prepend($plants, $arr);
+            }
+        }
+        return json_encode($plants);
     }
 
     public function storePlantsBySurveyId($survey_id, $user_id, $plants)
