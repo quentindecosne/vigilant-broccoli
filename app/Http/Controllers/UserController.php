@@ -14,6 +14,12 @@ class UserController extends Controller
     {
         $surveys = [];
         $user = User::with(['surveys', 'surveys.project'])->where('email', 'like', $email)->get()->first();
+        if (!$user)
+            return response()->json([
+            'message' => 'user email not recognized',
+            'code' => 401
+        ], 401);
+
         foreach($user->surveys as $item){
             $survey['id'] = $item['id'];
             $survey['name'] = $item['name'];
@@ -48,7 +54,7 @@ class UserController extends Controller
      */
     public function show(User $user)
     {
-        
+
     }
 
     /**
