@@ -16,7 +16,9 @@ final class ProjectsTable extends PowerGridComponent
     use ActionButton;
     use WithExport;
 
-    
+    public string $sortField = 'created_at';
+    public string $sortDirection = 'desc';
+
     /*
     |--------------------------------------------------------------------------
     |  Features Setup
@@ -27,7 +29,7 @@ final class ProjectsTable extends PowerGridComponent
     public function setUp(): array
     {
         $this->persist(['columns', 'filters']);
-        
+
         $this->showCheckBox();
 
         return [
@@ -45,7 +47,7 @@ final class ProjectsTable extends PowerGridComponent
                 ->showPerPage()
                 ->showRecordCount(),
 
-            Responsive::make(), 
+            Responsive::make(),
         ];
     }
 
@@ -102,7 +104,7 @@ final class ProjectsTable extends PowerGridComponent
         return PowerGrid::columns()
             ->addColumn('id')
             ->addColumn('name', function (Project $model) {
-                return '<a href="'.route('projects.show',$model->id ).'">'. e($model->name) .'</a>'; 
+                return '<a href="'.route('projects.show',$model->id ).'">'. e($model->name) .'</a>';
             })
 
             ->addColumn('contact', fn (Project $model) => strtolower(e($model->name)))
@@ -131,7 +133,7 @@ final class ProjectsTable extends PowerGridComponent
     public function columns(): array
     {
         return [
-            Column::make('Id', 'id'),
+            Column::make('Id', 'id')->hidden(),
             Column::make('Name', 'name')
                 ->sortable()
                 ->searchable(),
@@ -189,7 +191,7 @@ final class ProjectsTable extends PowerGridComponent
      * @return array<int, Button>
      */
 
-    
+
     public function actions(): array
     {
        return [
@@ -206,7 +208,7 @@ final class ProjectsTable extends PowerGridComponent
                ->openModal('projects-delete', ['project' => 'id']),
         ];
     }
-    
+
 
     /*
     |--------------------------------------------------------------------------
@@ -222,7 +224,7 @@ final class ProjectsTable extends PowerGridComponent
      * @return array<int, RuleActions>
      */
 
-    
+
     // public function actionRules(): array
     // {
     //    return [
@@ -231,8 +233,8 @@ final class ProjectsTable extends PowerGridComponent
     //         Rule::button('edit')
     //             ->when(fn($project) => $project->id === 1)
     //             ->hide(),
-            
-                
+
+
     //     ];
     // }
 
@@ -251,5 +253,5 @@ final class ProjectsTable extends PowerGridComponent
     {
        $this->emit('pg:eventRefresh-default');
     }
-    
+
 }

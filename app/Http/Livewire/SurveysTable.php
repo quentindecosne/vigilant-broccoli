@@ -16,6 +16,8 @@ final class SurveysTable extends PowerGridComponent
     use ActionButton;
     use WithExport;
 
+    public string $sortField = 'created_at';
+    public string $sortDirection = 'desc';
     /*
     |--------------------------------------------------------------------------
     |  Features Setup
@@ -26,7 +28,7 @@ final class SurveysTable extends PowerGridComponent
     public function setUp(): array
     {
         $this->persist(['columns', 'filters']);
-        
+
         $this->showCheckBox();
 
         return [
@@ -43,7 +45,7 @@ final class SurveysTable extends PowerGridComponent
                 ->showPerPage()
                 ->showRecordCount(),
 
-            Responsive::make(), 
+            Responsive::make(),
         ];
     }
 
@@ -113,10 +115,10 @@ final class SurveysTable extends PowerGridComponent
         return PowerGrid::columns()
             ->addColumn('id')
             ->addColumn('project_name', function (Survey $model) {
-                    return '<a href="'.route("projects.show", $model->project->id).'">'. e($model->project->name) .'</a>'; 
+                    return '<a href="'.route("projects.show", $model->project->id).'">'. e($model->project->name) .'</a>';
                 })
             ->addColumn('survey_name', function (Survey $model) {
-                return '<a href="'.route("surveys.show", $model->id).'">'. e($model->name) .'</a>'; 
+                return '<a href="'.route("surveys.show", $model->id).'">'. e($model->name) .'</a>';
             })
             ->addColumn('created_at_formatted', fn (Survey $model) => Carbon::parse($model->created_at)->format('d/m/Y'));
     }
@@ -192,7 +194,7 @@ final class SurveysTable extends PowerGridComponent
                                    </svg>')
                  ->class('inline-flex items-center px-2 py-1 border border-gray-300 shadow-sm text-sm font-medium rounded-md text-blue-700 bg-white hover:bg-blue-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500')
                  ->openModal('surveys-save', ['survey' => 'id']),
- 
+
              Button::make('destroy', '<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
                                         <path stroke-linecap="round" stroke-linejoin="round" d="M14.74 9l-.346 9m-4.788 0L9.26 9m9.968-3.21c.342.052.682.107 1.022.166m-1.022-.165L18.16 19.673a2.25 2.25 0 01-2.244 2.077H8.084a2.25 2.25 0 01-2.244-2.077L4.772 5.79m14.456 0a48.108 48.108 0 00-3.478-.397m-12 .562c.34-.059.68-.114 1.022-.165m0 0a48.11 48.11 0 013.478-.397m7.5 0v-.916c0-1.18-.91-2.164-2.09-2.201a51.964 51.964 0 00-3.32 0c-1.18.037-2.09 1.022-2.09 2.201v.916m7.5 0a48.667 48.667 0 00-7.5 0" />
                                     </svg>')
