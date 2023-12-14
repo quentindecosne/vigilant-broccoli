@@ -2,7 +2,6 @@
 
 namespace App\Http\Controllers;
 
-use Carbon\Carbon;
 use App\Models\User;
 use Illuminate\Http\Request;
 use App\Models\PlantSurveyUser;
@@ -38,24 +37,28 @@ class PlantSurveyUserController extends Controller
     {
         $user = User::where('email', 'like',$request->participant_email)->first();
         $survey = DB::table('survey_user')
-        ->join('surveys', 'surveys.id', '=', 'survey_user.survey_id')
-        ->where('survey_user.user_id', '=', $user->id)
-        ->where('survey_user.survey_id', '=', $request->survey_id)
-        ->select('survey_user.id','survey_user.survey_id','survey_user.user_id', 'surveys.name')
-        ->first();
+            ->join('surveys', 'surveys.id', '=', 'survey_user.survey_id')
+            ->where('survey_user.user_id', '=', $user->id)
+            ->where('survey_user.survey_id', '=', $request->survey_id)
+            ->select('survey_user.id','survey_user.survey_id','survey_user.user_id', 'surveys.name')
+            ->first();
+
         if ($survey){
             $plant_survey = new PlantSurveyUser;
-            $plant_survey->deletePlantsBySurveyId($survey->survey_id, $survey->user_id);
-            $plant_survey->storePlantsBySurveyId($survey->survey_id, $survey->user_id, json_decode($request->plants));
-            $completed_at = Carbon::now();
-            $result = DB::table('survey_user')->where('id', '=', $survey->id)->update(['surveyed_at' => $request->surveyed_at, 'completed_at' => $completed_at]);
-            activity('recent')->by($user)->event('success')->withProperties(['survey' => $survey->name, 'survey_id' => $survey->id])->log(':causer.name has submitted their survey: :properties.survey');
-
-            return response()->json([
-                'message' => 'survey saved successfully',
-                'code' => 200,
-                'data' => ['completed_at' => $completed_at]
-            ], 200);
+            $completed_at = $plant_survey->storePlantsBySurveyId($survey, $user, json_decode($request->plants), $request->surveyed_at);
+            if ($completed_at) {
+                return response()->json([
+                    'message' => 'survey saved successfully',
+                    'code' => 200,
+                    'data' => ['completed_at' => $completed_at]
+                ], 200);
+            }
+            else{
+                return response()->json([
+                    'message' => 'error while saving the survey',
+                    'code' => 500,
+                ], 500);
+            }
         }
         return response()->json([
             'message' => 'You are not authorized to save this survey',

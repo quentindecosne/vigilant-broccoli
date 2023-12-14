@@ -2,10 +2,10 @@
 
 namespace App\Models;
 
+use Carbon\Carbon;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 use function PHPUnit\Framework\isEmpty;
@@ -59,19 +59,53 @@ class PlantSurveyUser extends Model
         return json_encode($plants);
     }
 
-    public function storePlantsBySurveyId($survey_id, $user_id, $plants)
+
+    public function storePlantsBySurveyId($survey, $user, $plants, $surveyed_at)
     {
+        $this->deletePlantsBySurveyId($survey->id, $user->id);
+        $completed_at = Carbon::now();
+            DB::table('survey_user')
+                ->where('id', '=', $survey->survey_id)
+                ->update(['surveyed_at' => $surveyed_at, 'completed_at' => $completed_at]);
+
+            activity('recent')->by($user)->event('success')
+                ->withProperties(['survey' => $survey->name, 'survey_id' => $survey->survey_id])
+                ->log(':causer.name has submitted their survey: :properties.survey');
+
         foreach($plants as $plant){
             PlantSurveyUser::create([
-                'survey_id' => $survey_id,
-                'user_id' => $user_id,
+                'survey_id' => $survey->survey_id,
+                'user_id' => $user->id,
                 'plant_id' => $plant->plant_id,
                 'number_present' => $plant->number_present,
                 'occurrence' => $plant->occurrence,
                 'regeneration' => $plant->regeneration,
                 'note' => $plant->note,
             ]);
+            $master_survey_plant = PlantSurveyMaster::where('survey_id', '=', $survey->survey_id)
+                ->where('plant_id', '=',$plant->plant_id)
+                ->first();
+            if (!$master_survey_plant){
+                PlantSurveyMaster::create([
+                    'survey_id' => $survey->survey_id,
+                    'plant_id' => $plant->plant_id,
+                    'number_present' => $plant->number_present,
+                    'occurrence' => $plant->occurrence,
+                    'regeneration' => $plant->regeneration,
+                    'note' => $plant->note,
+                ]);
+            }
+            else{
+                if ($master_survey_plant->occurrence != $plant->occurrence){
+                    $master_survey_plant->occurrence = null;
+                }
+                if ($master_survey_plant->regeneration != $plant->regeneration){
+                    $master_survey_plant->regeneration = null;
+                }
+                $master_survey_plant->update();
+            }
         }
+        return $completed_at;
     }
 
 
