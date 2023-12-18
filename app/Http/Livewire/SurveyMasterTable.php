@@ -2,6 +2,7 @@
 
 namespace App\Http\Livewire;
 
+use App\Models\PlantSurveyMaster;
 use Illuminate\Support\Carbon;
 use Illuminate\Database\Query\Builder;
 use Illuminate\Support\Facades\DB;
@@ -27,6 +28,8 @@ final class SurveyMasterTable extends PowerGridComponent
     public array $perPageValues = [50,100,1000];
 
     public string $survey;
+
+    public string $sortField = 'plants.id';
 
     /*
     |--------------------------------------------------------------------------
@@ -66,16 +69,17 @@ final class SurveyMasterTable extends PowerGridComponent
      */
     public function datasource(): Builder
     {
+
         return DB::table('plant_survey_user')->where('plant_survey_user.survey_id','=',$this->survey)
-            ->select('plants.family_name','plants.botanical_name', 'plant_survey_user.id', 'plant_survey_user.survey_id', 'plant_survey_user.user_id', 'plant_survey_user.plant_id',
-                DB::raw('GROUP_CONCAT(plant_survey_user.occurrence) as occurrence'),
-                DB::raw('GROUP_CONCAT(plant_survey_user.regeneration) as regeneration'),
-                DB::raw('GROUP_CONCAT(plant_survey_user.number_present) as number_present'),
-
-    )
-            ->join('plants', 'plants.id', '=', 'plant_survey_user.plant_id')
-                ->groupBy(['plant_survey_user.survey_id', 'plant_survey_user.plant_id']);
-
+        ->select('plants.id as plant_id', 'plants.family_name', 'plants.botanical_name')
+        ->leftJoin('plants', 'plants.id', '=', 'plant_survey_user.plant_id')
+        ->leftJoin('plant_survey_master', 'plants.id', '=', 'plant_survey_master.plant_id')
+        ->groupBy('plants.id', 'plants.family_name', 'plants.botanical_name')
+        ->selectRaw('GROUP_CONCAT( plant_survey_user.occurrence) as participant_occurrence')
+        ->selectRaw('GROUP_CONCAT( plant_survey_user.regeneration) as participant_regeneration')
+        ->selectRaw('GROUP_CONCAT( plant_survey_user.number_present) as participant_number_present')
+        ->selectRaw('plant_survey_master.occurrence as master_occurrence')
+        ->selectRaw('plant_survey_master.regeneration as master_regeneration');
     }
 
     /*
@@ -115,18 +119,19 @@ final class SurveyMasterTable extends PowerGridComponent
             ->addColumn('family_name')
             ->addColumn('botanical_name')
             ->addColumn('number_present_participant', function ($model){
-                $present = explode(',',$model->number_present);
+                $present = explode(',',$model->participant_number_present);
                 $num_present = "";
                 $i = 0;
-                $colors = ['teal', 'green', 'amber', 'lime'];
+                $colors = ['teal', 'green', 'amber', 'lime', 'indigo', 'purple'];
                 foreach($present as $num) {
+//                    $num_present .= $num.', ';
                     $num_present .= "<span class=\"ml-1 inline-flex items-center px-2 py-0.5 rounded text-xs font-medium bg-".$colors[$i]."-100 text-".$colors[$i]."-800\">".$num."</span>";
                     $i++;
                 }
                 return $num_present;
             })
             ->addColumn('occurrence_participant', function ($model){
-                $occurrences = explode(',',$model->occurrence);
+                $occurrences = explode(',',$model->participant_occurrence);
                 $colors = ['rare'=> 'sky', 'abundant'=> 'blue', 'occasional'=> 'indigo', 'common'=> 'violet'];
                 $data = "";
                 foreach($occurrences as $occ) {
@@ -135,9 +140,12 @@ final class SurveyMasterTable extends PowerGridComponent
                 }
                 return $data;
             })
+            ->addColumn('master_occurrence', function($model){
+                return "<span class=\"ml-1 inline-flex items-center px-2 py-0.5 rounded text-xs font-medium bg-gray-100 text-gray-800\">".$model->master_occurrence."</span>";
+            })
             ->addColumn('plant_id')
             ->addColumn('regeneration_participant', function ($model){
-                $regenerations = explode(',',$model->regeneration);
+                $regenerations = explode(',',$model->participant_regeneration);
                 $colors = ['rare'=> 'rose', 'abundant'=> 'pink', 'occasional'=> 'fuchsia', 'common'=> 'purple'];
                 $data = "";
                 foreach($regenerations as $reg) {
@@ -145,6 +153,10 @@ final class SurveyMasterTable extends PowerGridComponent
                       $data .= "<span class=\"ml-1 inline-flex items-center px-2 py-0.5 rounded text-xs font-medium bg-".$colors[$reg]."-100 text-".$colors[$reg]."-800\">" . $reg . "</span>";
                 }
                 return $data;
+            })
+            ->addColumn('master_regeneration', function ($model){
+                return "<span class=\"ml-1 inline-flex items-center px-2 py-0.5 rounded text-xs font-medium bg-gray-100 text-gray-800\">".$model->master_regeneration."</span>";
+
             })
             ->addColumn('survey_id');
 
@@ -177,17 +189,23 @@ final class SurveyMasterTable extends PowerGridComponent
             Column::make('Botanical', 'botanical_name')
                 ->sortable()
                 ->searchable(),
-            Column::make('Number present', 'number_present_participant', 'number_present'),
-            Column::make('Occurrence', 'occurrence_participant','occurrence')
+            Column::make('Number present', 'number_present_participant', 'participant_number_present'),
+            Column::make('Occurrence', 'occurrence_participant','participant_occurrence')
+                ->sortable()
+                ->searchable(),
+
+             Column::make('Occ', 'master_occurrence','master_occurrence')
                 ->sortable()
                 ->searchable(),
 
             Column::make('Plant id', 'plant_id')->hidden(),
-           Column::make('Regeneration', 'regeneration_participant','regeneration')
+           Column::make('Regeneration', 'regeneration_participant','participant_regeneration')
                 ->sortable()
                 ->searchable(),
-
-            Column::make('Survey id', 'survey_id')->hidden(),
+             Column::make('Reg', 'master_regeneration','master_regeneration')
+                ->sortable()
+                ->searchable(),
+//            Column::make('Survey id', 'survey_id')->hidden(),
 
         ];
     }
