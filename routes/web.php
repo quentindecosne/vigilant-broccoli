@@ -19,7 +19,11 @@ use App\Http\Controllers\ProjectController;
 */
 
 Route::get('/', function () {
-    return view('welcome');
+    if (auth()->check()) {
+        return redirect()->route('dashboard');
+    } else {
+        return view('auth.login'); // You can also use 'auth.register' if you want to direct to the registration page.
+    }
 });
 
 Route::get('/dashboard', function () {
