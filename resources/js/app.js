@@ -1,9 +1,10 @@
 import './bootstrap';
 
-
+import $ from 'jquery';
 import Alpine from 'alpinejs';
 import flatpickr from "flatpickr";
 
+window.jQuery = window.$ = $;
 window.Alpine = Alpine;
 window.flatpickr = flatpickr
 
@@ -13,3 +14,6 @@ import './../../vendor/power-components/livewire-powergrid/dist/powergrid'
 import './../../vendor/power-components/livewire-powergrid/dist/powergrid.css'
 
 Alpine.start();
+
+
+
