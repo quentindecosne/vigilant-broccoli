@@ -5,6 +5,7 @@ namespace App\Http\Livewire;
 use App\Models\PlantSurveyMaster;
 use Illuminate\Support\Carbon;
 use Illuminate\Database\Query\Builder;
+use Illuminate\Support\Facades\Blade;
 use Illuminate\Support\Facades\DB;
 use PowerComponents\LivewirePowerGrid\Rules\{Rule, RuleActions};
 use PowerComponents\LivewirePowerGrid\Traits\{ActionButton, WithExport};
@@ -46,11 +47,12 @@ final class SurveyMasterTable extends PowerGridComponent
             Exportable::make('export')
                 ->striped()
                 ->type(Exportable::TYPE_XLS, Exportable::TYPE_CSV),
-            Header::make()->showSearchInput(),
+            Header::make(),
             Footer::make()
                 ->showPerPage($this->perPage, $this->perPageValues)
                 ->showRecordCount(),
             Responsive::make()->fixedColumns('family_name', 'botanical_name', Responsive::ACTIONS_COLUMN_NAME)
+
         ];
     }
 
@@ -71,7 +73,7 @@ final class SurveyMasterTable extends PowerGridComponent
     {
 
         return DB::table('plant_survey_user')->where('plant_survey_user.survey_id','=',$this->survey)
-        ->select('plants.id as plant_id', 'plants.family_name', 'plants.botanical_name')
+        ->select('plants.id as plant_id', 'plants.family_name', 'plants.botanical_name', 'plant_survey_master.id as master_survey_id')
         ->leftJoin('plants', 'plants.id', '=', 'plant_survey_user.plant_id')
         ->leftJoin('plant_survey_master', 'plants.id', '=', 'plant_survey_master.plant_id')
         ->groupBy('plants.id', 'plants.family_name', 'plants.botanical_name')
@@ -116,7 +118,10 @@ final class SurveyMasterTable extends PowerGridComponent
         return PowerGrid::columns()
 //            ->addColumn('created_at_formatted', fn ($model) => Carbon::parse($model->created_at)->format('d/m/Y'))
             ->addColumn('id')
-            ->addColumn('family_name')
+            ->addColumn('family_name', function ($model) {
+                return $model->botanical_name.'</br><span class="text-gray-500 text-sm">'.$model->family_name.'</span>';
+            })
+
             ->addColumn('botanical_name')
             ->addColumn('number_present_participant', function ($model){
                 $present = explode(',',$model->participant_number_present);
@@ -154,11 +159,17 @@ final class SurveyMasterTable extends PowerGridComponent
                 }
                 return $data;
             })
+            ->addColumn('survey_id', function ($model){
+                return Blade::render(
+                    '<x-occurrence-select url="'.route('master-survey.update', ['id' => 10]).'" type="occurrence" selected="'.$model->master_occurrence.'"></x-occurrence-select>'
+                );
+            })
             ->addColumn('master_regeneration', function ($model){
                 return "<span class=\"ml-1 inline-flex items-center px-2 py-0.5 rounded text-xs font-medium bg-gray-100 text-gray-800\">".$model->master_regeneration."</span>";
 
             })
-            ->addColumn('survey_id');
+            ->addColumn('master_survey_id');
+
 
     }
 
@@ -188,7 +199,8 @@ final class SurveyMasterTable extends PowerGridComponent
                 ->searchable(),
             Column::make('Botanical', 'botanical_name')
                 ->sortable()
-                ->searchable(),
+                ->searchable()
+                ->hidden(),
             Column::make('Number present', 'number_present_participant', 'participant_number_present'),
             Column::make('Occurrence', 'occurrence_participant','participant_occurrence')
                 ->sortable()
@@ -205,8 +217,8 @@ final class SurveyMasterTable extends PowerGridComponent
              Column::make('Reg', 'master_regeneration','master_regeneration')
                 ->sortable()
                 ->searchable(),
-//            Column::make('Survey id', 'survey_id')->hidden(),
-
+            Column::make('Master Occurrence', 'survey_id'),
+            Column::make('Master Survey ID', 'master_survey_id')->hidden(),
         ];
     }
 
@@ -229,6 +241,7 @@ final class SurveyMasterTable extends PowerGridComponent
     | Enable the method below only if the Routes below are defined in your app.
     |
     */
+
 
     /*
     |--------------------------------------------------------------------------

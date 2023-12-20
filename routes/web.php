@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\PlantSurveyMasterController;
 use Illuminate\Support\Facades\Route;
 use Spatie\Activitylog\Models\Activity;
 use App\Http\Controllers\PlantController;
@@ -40,6 +41,8 @@ Route::middleware('auth')->group(function () {
     Route::resource('projects', ProjectController::class);
     Route::resource('surveys', SurveyController::class);
     Route::resource('plants', PlantController::class);
+
+    Route::post('/master-survey/{id}', [PlantSurveyMasterController::class, 'destroy'])->name('master-survey.update');
 });
 
 require __DIR__.'/auth.php';
