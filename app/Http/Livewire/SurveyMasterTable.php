@@ -146,7 +146,9 @@ final class SurveyMasterTable extends PowerGridComponent
                 return $data;
             })
             ->addColumn('master_occurrence', function($model){
-                return "<span class=\"ml-1 inline-flex items-center px-2 py-0.5 rounded text-xs font-medium bg-gray-100 text-gray-800\">".$model->master_occurrence."</span>";
+               return Blade::render(
+                    '<x-occurrence-select url="'.route('master-survey.update', ['master_id' => $model->master_survey_id]).'" type="occurrence" selected="'.$model->master_occurrence.'"></x-occurrence-select>'
+               );
             })
             ->addColumn('plant_id')
             ->addColumn('regeneration_participant', function ($model){
@@ -159,14 +161,10 @@ final class SurveyMasterTable extends PowerGridComponent
                 }
                 return $data;
             })
-            ->addColumn('survey_id', function ($model){
-                return Blade::render(
-                    '<x-occurrence-select url="'.route('master-survey.update', ['id' => 10]).'" type="occurrence" selected="'.$model->master_occurrence.'"></x-occurrence-select>'
-                );
-            })
             ->addColumn('master_regeneration', function ($model){
-                return "<span class=\"ml-1 inline-flex items-center px-2 py-0.5 rounded text-xs font-medium bg-gray-100 text-gray-800\">".$model->master_regeneration."</span>";
-
+                return Blade::render(
+                    '<x-occurrence-select url="'.route('master-survey.update', ['master_id' => $model->master_survey_id]).'" type="regeneration" selected="'.$model->master_regeneration.'"></x-occurrence-select>'
+               );
             })
             ->addColumn('master_survey_id');
 
@@ -206,7 +204,7 @@ final class SurveyMasterTable extends PowerGridComponent
                 ->sortable()
                 ->searchable(),
 
-             Column::make('Occ', 'master_occurrence','master_occurrence')
+             Column::make('Master Occ', 'master_occurrence','master_occurrence')
                 ->sortable()
                 ->searchable(),
 
@@ -214,10 +212,9 @@ final class SurveyMasterTable extends PowerGridComponent
            Column::make('Regeneration', 'regeneration_participant','participant_regeneration')
                 ->sortable()
                 ->searchable(),
-             Column::make('Reg', 'master_regeneration','master_regeneration')
+             Column::make('Master Reg', 'master_regeneration','master_regeneration')
                 ->sortable()
                 ->searchable(),
-            Column::make('Master Occurrence', 'survey_id'),
             Column::make('Master Survey ID', 'master_survey_id')->hidden(),
         ];
     }

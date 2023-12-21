@@ -42,7 +42,7 @@ Route::middleware('auth')->group(function () {
     Route::resource('surveys', SurveyController::class);
     Route::resource('plants', PlantController::class);
 
-    Route::post('/master-survey/{id}', [PlantSurveyMasterController::class, 'destroy'])->name('master-survey.update');
+    Route::post('/master-survey/{master_id}', [PlantSurveyMasterController::class, 'update'])->name('master-survey.update');
 });
 
 require __DIR__.'/auth.php';

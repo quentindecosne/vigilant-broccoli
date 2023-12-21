@@ -39,8 +39,6 @@
             </main>
         </div>
 
-
         @livewire('livewire-ui-modal')
-    @stack('custom-scripts')
     </body>
 </html>

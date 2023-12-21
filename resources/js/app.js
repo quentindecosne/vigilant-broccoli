@@ -17,3 +17,31 @@ Alpine.start();
 
 
 
+    jQuery(document).ready(function($){
+        $(".master-update-select").on('change',function (e) {
+            $.ajaxSetup({
+                headers: {
+                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                }
+            });
+            e.preventDefault();
+            var formData = {
+                type: jQuery(this).data('type'),
+                selected_value: jQuery(this).val(),
+            };
+
+            $.ajax({
+                type: 'POST',
+                url: jQuery(this).data('url'),
+                data: formData,
+                dataType: 'json',
+                success: function (data) {
+                    console.log('success');
+                },
+                error: function (data) {
+                    console.log('error');
+                    console.log(data);
+                }
+            });
+        });
+});
