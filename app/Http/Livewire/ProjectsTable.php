@@ -33,15 +33,13 @@ final class ProjectsTable extends PowerGridComponent
         $this->showCheckBox();
 
         return [
-            Exportable::make('export')
+            Exportable::make('tree-tracker_projects_'.Carbon::now())
                 ->striped()
                 ->type(Exportable::TYPE_XLS, Exportable::TYPE_CSV),
 
             Header::make()
-                ->showSearchInput()
-                // ->withoutLoading()
-                // ->showToggleColumns()
-                ->includeViewOnTop('project.datatable-header'),
+                ->showSearchInput(),
+//                ->includeViewOnTop('project.datatable-header'),
 
             Footer::make()
                 ->showPerPage()
@@ -50,6 +48,18 @@ final class ProjectsTable extends PowerGridComponent
             Responsive::make(),
         ];
     }
+
+    public function header(): array
+{
+    return [
+        Button::add('projects-save')
+            ->caption('Create a new project')
+            ->class('create-button')
+            ->openModal('projects-save', []),
+
+        //...
+    ];
+}
 
 
     /*
@@ -103,7 +113,8 @@ final class ProjectsTable extends PowerGridComponent
     {
         return PowerGrid::columns()
             ->addColumn('id')
-            ->addColumn('name', function (Project $model) {
+            ->addColumn('name')
+            ->addColumn('name_link', function (Project $model) {
                 return '<a href="'.route('projects.show',$model->id ).'">'. e($model->name) .'</a>';
             })
 
@@ -135,6 +146,13 @@ final class ProjectsTable extends PowerGridComponent
         return [
             Column::make('Id', 'id')->hidden(),
             Column::make('Name', 'name')
+                ->visibleInExport(true)
+                ->hidden()
+                ->sortable()
+                ->searchable(),
+            
+            Column::make('Name', 'name_link', 'name')
+                ->visibleInExport(false)
                 ->sortable()
                 ->searchable(),
 

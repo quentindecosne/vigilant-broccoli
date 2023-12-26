@@ -29,3 +29,11 @@
 .modal-delete-button{
     @apply  bg-red-600  text-white hover:bg-red-700 focus:ring-red-500;
 }
+
+.create-button{
+    @apply outline-none inline-flex justify-center items-center transition-all ease-in duration-150;
+    @apply focus:ring-2 focus:ring-offset-2 hover:shadow-sm disabled:opacity-80 disabled:cursor-not-allowed rounded gap-x-2 text-sm px-4 py-2;
+    @apply ring-positive-500 text-white bg-positive-500 hover:bg-positive-600 hover:ring-positive-600;
+    @apply dark:ring-offset-slate-800 dark:bg-positive-700 dark:ring-positive-700;
+    @apply dark:hover:bg-positive-600 dark:hover:ring-positive-600;
+}
