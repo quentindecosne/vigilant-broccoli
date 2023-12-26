@@ -50,16 +50,16 @@ final class ProjectsTable extends PowerGridComponent
     }
 
     public function header(): array
-{
-    return [
-        Button::add('projects-save')
-            ->caption('Create a new project')
-            ->class('create-button')
-            ->openModal('projects-save', []),
+    {
+        return [
+            Button::add('projects-save')
+                ->caption('Create a new project')
+                ->class('create-button')
+                ->openModal('projects-save', []),
 
-        //...
-    ];
-}
+            //...
+        ];
+    }
 
 
     /*
@@ -150,7 +150,7 @@ final class ProjectsTable extends PowerGridComponent
                 ->hidden()
                 ->sortable()
                 ->searchable(),
-            
+
             Column::make('Name', 'name_link', 'name')
                 ->visibleInExport(false)
                 ->sortable()

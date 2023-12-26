@@ -16,6 +16,7 @@ final class SurveysTable extends PowerGridComponent
     use ActionButton;
     use WithExport;
 
+    public string $primaryKey = 'surveys.id';
     public string $sortField = 'created_at';
     public string $sortDirection = 'desc';
     /*
@@ -32,20 +33,32 @@ final class SurveysTable extends PowerGridComponent
         $this->showCheckBox();
 
         return [
-            Exportable::make('export')
+            Exportable::make('tree-tracker_surveys_'.Carbon::now())
                 ->striped()
                 ->type(Exportable::TYPE_XLS, Exportable::TYPE_CSV),
 
             Header::make()
-                ->showSearchInput()
+                ->showSearchInput(),
                 // ->showToggleColumns()
-                ->includeViewOnTop('survey.datatable-header'),
+              //  ->includeViewOnTop('survey.datatable-header'),
 
             Footer::make()
                 ->showPerPage()
                 ->showRecordCount(),
 
             Responsive::make(),
+        ];
+    }
+
+    public function header(): array
+    {
+        return [
+            Button::add('surveys-save')
+                ->caption('Create a new survey')
+                ->class('create-button')
+                ->openModal('surveys-save', []),
+
+            //...
         ];
     }
 
@@ -114,6 +127,13 @@ final class SurveysTable extends PowerGridComponent
     {
         return PowerGrid::columns()
             ->addColumn('id')
+            ->addColumn('project', function (Survey $model) {
+                return $model->project->name;
+            })
+            ->addColumn('survey', function (Survey $model) {
+                return $model->name;
+            })
+
             ->addColumn('project_name', function (Survey $model) {
                     return '<a href="'.route("projects.show", $model->project->id).'">'. e($model->project->name) .'</a>';
                 })
@@ -141,13 +161,20 @@ final class SurveysTable extends PowerGridComponent
     {
         return [
             Column::make('Id', 'id')->hidden(),
+            Column::make('Project', 'project', 'project_name')
+                ->visibleInExport(true)
+                ->hidden(),
             Column::make('Project', 'project_name')
-            ->sortable(),
+                ->visibleInExport(false)
+                ->sortable(),
             // ->searchable()
             Column::make('Name', 'survey_name')
+                ->visibleInExport(false)
                 ->sortable()
                 ->searchable(),
-
+            Column::make('Name', 'survey','survey_name')
+                ->visibleInExport(true)
+                ->hidden(),
             Column::make('Created at', 'created_at_formatted', 'surveys.created_at')
                 ->sortable()
 
