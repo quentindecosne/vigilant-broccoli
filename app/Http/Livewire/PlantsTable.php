@@ -17,7 +17,7 @@ final class PlantsTable extends PowerGridComponent
     use WithExport;
 
     public string $sortField = 'botanical_name';
-    
+
     public string $sortDirection = 'asc';
 
     /*
@@ -93,21 +93,23 @@ final class PlantsTable extends PowerGridComponent
     {
         return PowerGrid::columns()
             ->addColumn('id')
-            
+
             ->addColumn('botanical_name')
 
            /** Example of custom column using a closure **/
             ->addColumn('botanical_name_lower', fn (Plant $model) => strtolower(e($model->botanical_name)))
 
             ->addColumn('family_name')
-
+            ->addColumn('exists_in_plantekey', function (Plant $model) {
+                return ($model->plantekey_id ? 'Yes' : 'No');
+            })
             ->addColumn('plantekey_id', function (Plant $model) {
-                return ($model->plantekey_id ? 
+                return ($model->plantekey_id ?
                 '<a target="_blank" href="https://plantekey.com/plants/' . strtolower(e($model->family_name)) . '/'. Str::replace(' ', '-', strtolower(e($model->botanical_name))) . '/">'.
                 '<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6 text-green-500 text-center">
                     <path stroke-linecap="round" stroke-linejoin="round" d="M9 12.75L11.25 15 15 9.75M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
                 </svg></a>
-              ' : 
+              ' :
               '<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6 text-red-500 text-center">
               <path stroke-linecap="round" stroke-linejoin="round" d="M9.75 9.75l4.5 4.5m0-4.5l-4.5 4.5M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
             </svg>
@@ -134,7 +136,7 @@ final class PlantsTable extends PowerGridComponent
     {
         return [
             Column::make('Id', 'id')->sortable(),
-            
+
             Column::make('Botanical name', 'botanical_name')
                 ->sortable()
                 ->searchable(),
@@ -142,7 +144,11 @@ final class PlantsTable extends PowerGridComponent
             Column::make('Family name', 'family_name')
                 ->sortable()
                 ->searchable(),
-            Column::make('Plantekey', 'plantekey_id'),
+            Column::make('Exists in Plantekey', 'exists_in_plantekey', 'plantekey_id')
+                ->visibleInExport(true)
+                ->hidden(),
+            Column::make('Plantekey', 'plantekey_id')
+                ->visibleInExport(false),
             Column::make('Added', 'created_at_formatted', 'created_at')
                 // ->hidden()
                 ->sortable(),
