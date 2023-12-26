@@ -7,26 +7,29 @@
             Hello world!
           </h1>
     </x-slot> --}}
+
     <div class="py-12">
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
             <div>
                 <h3 class="text-lg leading-6 font-medium text-gray-900">Overview</h3>
                 <dl class="mt-5 grid grid-cols-1 gap-5 sm:grid-cols-3">
                     <div class="px-4 py-5 bg-white shadow rounded-lg overflow-hidden sm:p-6">
-                    <dt class="text-sm font-medium text-gray-500 truncate">Total Subscribers</dt>
-                    <dd class="mt-1 text-3xl font-semibold text-gray-900">71,897</dd>
+                    <dt class="text-sm font-medium text-gray-500 truncate">Projects</dt>
+                    <dd class="mt-1 text-3xl font-semibold text-gray-900">{{ $projects }}</dd>
                     </div>
-                
+
                     <div class="px-4 py-5 bg-white shadow rounded-lg overflow-hidden sm:p-6">
-                    <dt class="text-sm font-medium text-gray-500 truncate">Avg. Open Rate</dt>
-                    <dd class="mt-1 text-3xl font-semibold text-gray-900">58.16%</dd>
+                    <dt class="text-sm font-medium text-gray-500 truncate">Surveys</dt>
+                    <dd class="mt-1 text-3xl font-semibold text-gray-900">{{ $surveys }}</dd>
                     </div>
-                
+
                     <div class="px-4 py-5 bg-white shadow rounded-lg overflow-hidden sm:p-6">
-                    <dt class="text-sm font-medium text-gray-500 truncate">Avg. Click Rate</dt>
-                    <dd class="mt-1 text-3xl font-semibold text-gray-900">24.57%</dd>
+                    <dt class="text-sm font-medium text-gray-500 truncate">Plants</dt>
+                    <dd class="mt-1 text-3xl font-semibold text-gray-900">{{ $plants }}</dd>
                     </div>
                 </dl>
+            </div>
+
             <div class="pt-8">
                <h3 class="mx-auto mt-8 text-lg leading-6 font-medium text-gray-900">Recent activity</h3>
                <table class="min-w-full divide-y divide-gray-200 mt-5 ">
@@ -39,10 +42,10 @@
                     </tr>
                   </thead>
                   <tbody class="bg-white divide-y divide-gray-200">
-                    @foreach ($activity as $log) 
+                    @foreach ($activity as $log)
                     <tr class="bg-white">
                       <td class="max-w-0 w-full px-6 py-4 whitespace-nowrap text-sm text-gray-900">
-                       
+
                             <div class="flex">
                                 @if (isset($log->properties['project_id']))
                                     <a href="{{ route('projects.show', $log->properties['project_id']) }}" class="group inline-flex space-x-2 truncate text-sm">
@@ -62,7 +65,7 @@
                                     <p class="text-gray-500 truncate group-hover:text-gray-900">{{ $log->description}}</p>
                                 @endif
                             </div>
-     
+
                       </td>
                       {{-- <td class="px-6 py-4 text-right whitespace-nowrap text-sm text-gray-500">
                         <span class="text-gray-900 font-medium">{{ $log->causer->name }}</span>
@@ -87,6 +90,21 @@
                   </tbody>
                </table>
             </div>
+            <div class="mt-4">
+                 <x-mapbox
+                id="map"
+                position="relative"
+                class="w-12"
+                style="height: 500px;"
+    {{--            mapStyle="mapbox/navigation-night-v1"--}}
+                :zoom="8"
+                :center="['long' => 79.80698481268966,'lat' => 11.986645190074816]"
+                :navigationControls="true"
+                geocoderPosition="top-left"
+                :markers="[['long' => 79.80698481268966,'lat' => 11.986645190074816,'description' => 'Auroville Botanical Gardens'], ['long' => 9, 'lat' => 10]]" />
+            </div>
         </div>
     </div>
+
+
 </x-app-layout>
