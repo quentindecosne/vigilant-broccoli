@@ -44,7 +44,7 @@ final class SurveyMasterTable extends PowerGridComponent
         $this->showCheckBox();
 
         return [
-            Exportable::make('export')
+            Exportable::make('tree-tracker_survey_'.Carbon::now())
                 ->striped()
                 ->type(Exportable::TYPE_XLS, Exportable::TYPE_CSV),
             Header::make(),
@@ -118,10 +118,10 @@ final class SurveyMasterTable extends PowerGridComponent
         return PowerGrid::columns()
 //            ->addColumn('created_at_formatted', fn ($model) => Carbon::parse($model->created_at)->format('d/m/Y'))
             ->addColumn('id')
-            ->addColumn('family_name', function ($model) {
+            ->addColumn('family_botanical_name', function ($model) {
                 return $model->botanical_name.'</br><span class="text-gray-500 text-sm">'.$model->family_name.'</span>';
             })
-
+            ->addColumn('family_name')
             ->addColumn('botanical_name')
             ->addColumn('number_present_participant', function ($model){
                 $present = explode(',',$model->participant_number_present);
@@ -135,6 +135,9 @@ final class SurveyMasterTable extends PowerGridComponent
                 }
                 return $num_present;
             })
+             ->addColumn('number_present_grouped', function ($model){
+                return $model->participant_number_present;
+             })
             ->addColumn('occurrence_participant', function ($model){
                 $occurrences = explode(',',$model->participant_occurrence);
                 $colors = ['rare'=> 'sky', 'abundant'=> 'blue', 'occasional'=> 'indigo', 'common'=> 'violet'];
@@ -145,11 +148,17 @@ final class SurveyMasterTable extends PowerGridComponent
                 }
                 return $data;
             })
+            ->addColumn('occurrence_grouped', function ($model){
+                return $model->participant_occurrence;
+             })
             ->addColumn('master_occurrence', function($model){
                return Blade::render(
                     '<x-occurrence-select url="'.route('master-survey.update', ['master_id' => $model->master_survey_id]).'" type="occurrence" selected="'.$model->master_occurrence.'"></x-occurrence-select>'
                );
             })
+            ->addColumn('master_occ', function ($model){
+                return $model->master_occurrence;
+             })
             ->addColumn('plant_id')
             ->addColumn('regeneration_participant', function ($model){
                 $regenerations = explode(',',$model->participant_regeneration);
@@ -161,11 +170,17 @@ final class SurveyMasterTable extends PowerGridComponent
                 }
                 return $data;
             })
+             ->addColumn('regeneration_grouped', function ($model){
+                return $model->participant_regeneration;
+             })
             ->addColumn('master_regeneration', function ($model){
                 return Blade::render(
                     '<x-occurrence-select url="'.route('master-survey.update', ['master_id' => $model->master_survey_id]).'" type="regeneration" selected="'.$model->master_regeneration.'"></x-occurrence-select>'
                );
             })
+            ->addColumn('master_reg', function ($model){
+                return $model->master_regeneration;
+             })
             ->addColumn('master_survey_id');
 
 
@@ -192,29 +207,65 @@ final class SurveyMasterTable extends PowerGridComponent
 //                ->sortable(),
 
             Column::make('Id', 'id')->hidden(),
-            Column::make('Family', 'family_name')
+
+            Column::make('Family & Botanical', 'family_botanical_name' )
+                ->visibleInExport(false)
                 ->sortable()
                 ->searchable(),
-            Column::make('Botanical', 'botanical_name')
+            Column::make('Family', 'family_name')
+                ->visibleInExport(true)
                 ->sortable()
                 ->searchable()
                 ->hidden(),
-            Column::make('Number present', 'number_present_participant', 'participant_number_present'),
+            Column::make('Botanical', 'botanical_name')
+                ->visibleInExport(true)
+                ->sortable()
+                ->searchable()
+                ->hidden(),
+
+            Column::make('Number present', 'number_present_participant', 'participant_number_present')
+                ->visibleInExport(false),
+            Column::make('Number present', 'number_present_grouped')
+                ->visibleInExport(true)
+                ->hidden(),
+
             Column::make('Occurrence', 'occurrence_participant','participant_occurrence')
                 ->sortable()
-                ->searchable(),
+                ->searchable()
+                ->visibleInExport(false),
+            Column::make('Occurrence', 'occurrence_grouped')
+                ->visibleInExport(true)
+                ->hidden(),
 
-             Column::make('Master Occ', 'master_occurrence','master_occurrence')
+            Column::make('Master Occ', 'master_occurrence','master_occurrence')
                 ->sortable()
-                ->searchable(),
+                ->searchable()
+                ->visibleInExport(false),
+
+            Column::make('Master Occ', 'master_occ')
+                ->hidden()
+                ->sortable()
+                ->searchable()
+                ->visibleInExport(true),
 
             Column::make('Plant id', 'plant_id')->hidden(),
-           Column::make('Regeneration', 'regeneration_participant','participant_regeneration')
+            Column::make('Regeneration', 'regeneration_participant','participant_regeneration')
                 ->sortable()
-                ->searchable(),
+                ->searchable()
+                ->visibleInExport(false),
+            Column::make('Regeneration', 'regeneration_grouped')
+                ->visibleInExport(true)
+                ->hidden(),
              Column::make('Master Reg', 'master_regeneration','master_regeneration')
                 ->sortable()
-                ->searchable(),
+                ->searchable()
+                ->visibleInExport(false),
+
+             Column::make('Master Reg', 'master_occ')
+                ->hidden()
+                ->sortable()
+                ->searchable()
+                ->visibleInExport(true),
             Column::make('Master Survey ID', 'master_survey_id')->hidden(),
         ];
     }
