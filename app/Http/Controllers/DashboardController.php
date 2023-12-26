@@ -19,7 +19,12 @@ class DashboardController extends Controller
         $surveys = Survey::count();
         $plants = Plant::count();
         $activity = Activity::inLog('recent')->with('causer')->orderBy('created_at','desc')->limit(10)->get();
-        return view('dashboard', ['activity' => $activity, 'projects' => $projects, 'surveys' => $surveys, 'plants' => $plants]);
+        return view('dashboard',
+            ['activity' => $activity,
+                'projects' => $projects,
+                'surveys' => $surveys,
+                'plants' => $plants
+            ]);
     }
 
     /**

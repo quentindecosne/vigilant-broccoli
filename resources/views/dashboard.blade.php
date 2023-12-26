@@ -29,8 +29,28 @@
                     </div>
                 </dl>
             </div>
-
-            <div class="pt-8">
+             <div class="mt-4">
+                 <x-mapbox
+                id="map"
+                position="relative"
+                class="w-12"
+                style="height: 750px;"
+    {{--            mapStyle="mapbox/navigation-night-v1"--}}
+                :zoom="4"
+                :center="['long' => 78.73386056550159,'lat' =>22.51097642068804]"
+                :navigationControls="true"
+                geocoderPosition="top-left"
+                :markers="[
+    ['long'=> 78.100566033636, 'lat'=> 9.381633352054832, 'description'=> 'Pandalgudi Eco Park'],
+    ['long'=> 75.79431511473925, 'lat'=> 26.95921703538164, 'description'=> 'Kishan Bagh'],
+    ['long'=> 77.11152515419001, 'lat'=> 28.48178754422642, 'description'=> 'Aravali Biodiversity Park'],
+    ['long'=> 77.56982648303719, 'lat'=> 9.451818895781059, 'description'=> 'Sanjeevi Malai'],
+    ['long'=> 79.1441697338483, 'lat'=> 11.11828398424207, 'description'=> 'Ariyalur Eco Adventure Park'],
+    ['long'=> 80.19829632964949, 'lat'=> 12.83697433955428, 'description'=> 'Siruseri Twin Lakes'],
+    ['long'=> 73.02083310501529, 'lat'=> 26.30277152110542, 'description'=> 'Rao Jodha Park']
+]" />
+            </div>
+            <div class="mt-4">
                <h3 class="mx-auto mt-8 text-lg leading-6 font-medium text-gray-900">Recent activity</h3>
                <table class="min-w-full divide-y divide-gray-200 mt-5 ">
                 <thead>
@@ -90,19 +110,7 @@
                   </tbody>
                </table>
             </div>
-            <div class="mt-4">
-                 <x-mapbox
-                id="map"
-                position="relative"
-                class="w-12"
-                style="height: 500px;"
-    {{--            mapStyle="mapbox/navigation-night-v1"--}}
-                :zoom="8"
-                :center="['long' => 79.80698481268966,'lat' => 11.986645190074816]"
-                :navigationControls="true"
-                geocoderPosition="top-left"
-                :markers="[['long' => 79.80698481268966,'lat' => 11.986645190074816,'description' => 'Auroville Botanical Gardens'], ['long' => 9, 'lat' => 10]]" />
-            </div>
+
         </div>
     </div>
 
