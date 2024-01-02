@@ -26,7 +26,6 @@ return new class extends Migration
             $table->dropColumn('surveyed_at');
             $table->dropColumn('completed_at');
 
-
         });
     }
 };

@@ -2,12 +2,8 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Project;
 use App\Models\PlantSurveyUser;
-use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Auth;
-use App\Http\Requests\StoreProjectRequest;
-use App\Http\Requests\UpdateProjectRequest;
+use App\Models\Project;
 
 class ProjectController extends Controller
 {
@@ -20,17 +16,18 @@ class ProjectController extends Controller
     }
 
     public function show(Project $project)
-    {        
+    {
         $submitted_surveys = [];
         $proj = Project::find($project->id);
-        foreach($proj->surveys as $survey){
-            foreach($survey->participants as $participant){
+        foreach ($proj->surveys as $survey) {
+            foreach ($survey->participants as $participant) {
                 $is_submitted = PlantSurveyUser::where('survey_id', '=', $survey->id)->where('user_id', '=', $participant->id)->count();
-                if ($is_submitted)
+                if ($is_submitted) {
                     $submitted_surveys[] += $participant->id;
+                }
             }
         }
-        return view('project.show', ['project'=> $proj, 'submitted_surveys' => $submitted_surveys]);
-    }
 
+        return view('project.show', ['project' => $proj, 'submitted_surveys' => $submitted_surveys]);
+    }
 }

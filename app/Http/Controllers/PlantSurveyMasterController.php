@@ -53,20 +53,22 @@ class PlantSurveyMasterController extends Controller
     public function update(Request $request, PlantSurveyMaster $plantSurveyMaster)
     {
         $master_survey_plant = PlantSurveyMaster::find($request->master_id);
-        if ($master_survey_plant){
-            if ($request->type == "occurrence"){
-                if ($master_survey_plant->occurrence != $request->selected_value)
+        if ($master_survey_plant) {
+            if ($request->type == 'occurrence') {
+                if ($master_survey_plant->occurrence != $request->selected_value) {
                     $master_survey_plant->occurrence = $request->selected_value;
-                    $master_survey_plant->save();
+                }
+                $master_survey_plant->save();
             }
-            if ($request->type == "regeneration"){
-                if ($master_survey_plant->regeneration != $request->selected_value)
+            if ($request->type == 'regeneration') {
+                if ($master_survey_plant->regeneration != $request->selected_value) {
                     $master_survey_plant->regeneration = $request->selected_value;
-                    $master_survey_plant->save();
+                }
+                $master_survey_plant->save();
             }
         }
-        return response()->json(['master_survey_plant' => $master_survey_plant ]);
 
+        return response()->json(['master_survey_plant' => $master_survey_plant]);
 
     }
 

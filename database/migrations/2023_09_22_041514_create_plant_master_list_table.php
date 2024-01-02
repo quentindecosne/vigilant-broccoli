@@ -14,8 +14,8 @@ return new class extends Migration
         Schema::create('plants', function (Blueprint $table) {
             $table->id();
             $table->unsignedInteger('plantekey_id');
-            $table->string('botanical_name',500);
-            $table->string('family_name',500);
+            $table->string('botanical_name', 500);
+            $table->string('family_name', 500);
             $table->timestamps();
         });
     }

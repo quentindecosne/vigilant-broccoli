@@ -3,13 +3,22 @@
 namespace App\Http\Livewire;
 
 use App\Models\Survey;
-use Illuminate\Support\Facades\DB;
 use Illuminate\Database\Query\Builder;
-use PowerComponents\LivewirePowerGrid\Responsive;
+use Illuminate\Support\Facades\DB;
+use PowerComponents\LivewirePowerGrid\Button;
+use PowerComponents\LivewirePowerGrid\Column;
+use PowerComponents\LivewirePowerGrid\Exportable;
 use PowerComponents\LivewirePowerGrid\Filters\Filter;
-use PowerComponents\LivewirePowerGrid\Rules\{Rule, RuleActions};
-use PowerComponents\LivewirePowerGrid\Traits\{ActionButton, WithExport};
-use PowerComponents\LivewirePowerGrid\{Button, Column, Exportable, Footer, Header, PowerGrid, PowerGridComponent, PowerGridColumns};
+use PowerComponents\LivewirePowerGrid\Footer;
+use PowerComponents\LivewirePowerGrid\Header;
+use PowerComponents\LivewirePowerGrid\PowerGrid;
+use PowerComponents\LivewirePowerGrid\PowerGridColumns;
+use PowerComponents\LivewirePowerGrid\PowerGridComponent;
+use PowerComponents\LivewirePowerGrid\Responsive;
+use PowerComponents\LivewirePowerGrid\Rules\Rule;
+use PowerComponents\LivewirePowerGrid\Rules\RuleActions;
+use PowerComponents\LivewirePowerGrid\Traits\ActionButton;
+use PowerComponents\LivewirePowerGrid\Traits\WithExport;
 
 final class PlantSurveyUserTable extends PowerGridComponent
 {
@@ -31,8 +40,8 @@ final class PlantSurveyUserTable extends PowerGridComponent
 
         return [
             Exportable::make('export')
-            ->striped()
-            ->type(Exportable::TYPE_XLS, Exportable::TYPE_CSV),
+                ->striped()
+                ->type(Exportable::TYPE_XLS, Exportable::TYPE_CSV),
 
             // Header::make()
             //     ->showSearchInput(),
@@ -44,7 +53,7 @@ final class PlantSurveyUserTable extends PowerGridComponent
                 ->showPerPage()
                 ->showRecordCount(),
 
-            Responsive::make(), 
+            Responsive::make(),
         ];
     }
 
@@ -58,29 +67,27 @@ final class PlantSurveyUserTable extends PowerGridComponent
 
     /**
      * PowerGrid datasource.
-     *
-     * @return Builder
      */
     public function datasource(): Builder
     {
-       
+
         return DB::table('plant_survey_user')
-        ->join('users', 'users.id', '=', 'plant_survey_user.user_id')
-        ->leftJoin('plants', 'plants.id', '=', 'plant_survey_user.plant_id')
-        ->where('plant_survey_user.survey_id', '=', $this->survey->id)
-        ->orderBy('plant_survey_user.plant_id')
-        ->orderBy('plant_survey_user.user_id')
-        ->groupBy('plant_survey_user.plant_id')
-        ->select([
-            'plants.family_name',
-            'plants.botanical_name',
-            'users.name as participant',
-            'plant_survey_user.id as id',
-            'plant_survey_user.plant_id as plant_id',
-            DB::raw('group_concat(plant_survey_user.number_present) as number_present'),
-            DB::raw('group_concat(plant_survey_user.occurrence) as occurrence'),
-            DB::raw('group_concat(plant_survey_user.regeneration) as regeneration'),
-        ]);
+            ->join('users', 'users.id', '=', 'plant_survey_user.user_id')
+            ->leftJoin('plants', 'plants.id', '=', 'plant_survey_user.plant_id')
+            ->where('plant_survey_user.survey_id', '=', $this->survey->id)
+            ->orderBy('plant_survey_user.plant_id')
+            ->orderBy('plant_survey_user.user_id')
+            ->groupBy('plant_survey_user.plant_id')
+            ->select([
+                'plants.family_name',
+                'plants.botanical_name',
+                'users.name as participant',
+                'plant_survey_user.id as id',
+                'plant_survey_user.plant_id as plant_id',
+                DB::raw('group_concat(plant_survey_user.number_present) as number_present'),
+                DB::raw('group_concat(plant_survey_user.occurrence) as occurrence'),
+                DB::raw('group_concat(plant_survey_user.regeneration) as regeneration'),
+            ]);
     }
 
     /*
@@ -123,9 +130,9 @@ final class PlantSurveyUserTable extends PowerGridComponent
             ->addColumn('number_present')
             ->addColumn('occurrence')
             ->addColumn('regeneration');
-            // // ->addColumn('note')
-            // ->addColumn('created_at_formatted', fn ($model) => Carbon::parse($model->created_at)->format('d/m/Y H:i:s'))
-            // ->addColumn('updated_at_formatted', fn ($model) => Carbon::parse($model->updated_at)->format('d/m/Y H:i:s'));
+        // // ->addColumn('note')
+        // ->addColumn('created_at_formatted', fn ($model) => Carbon::parse($model->created_at)->format('d/m/Y H:i:s'))
+        // ->addColumn('updated_at_formatted', fn ($model) => Carbon::parse($model->updated_at)->format('d/m/Y H:i:s'));
     }
 
     /*
@@ -137,11 +144,11 @@ final class PlantSurveyUserTable extends PowerGridComponent
     |
     */
 
-     /**
-      * PowerGrid Columns.
-      *
-      * @return array<int, Column>
-      */
+    /**
+     * PowerGrid Columns.
+     *
+     * @return array<int, Column>
+     */
     public function columns(): array
     {
         return [

@@ -8,19 +8,18 @@ use Illuminate\Support\Carbon;
 
 class UserController extends Controller
 {
-
-
     public function getByUserEmail($email)
     {
         $surveys = [];
         $user = User::with(['surveys', 'surveys.project'])->where('email', 'like', $email)->get()->first();
-        if (!$user)
+        if (! $user) {
             return response()->json([
-            'message' => 'user email not recognized',
-            'code' => 401
-        ], 401);
+                'message' => 'user email not recognized',
+                'code' => 401,
+            ], 401);
+        }
 
-        foreach($user->surveys as $item){
+        foreach ($user->surveys as $item) {
             $survey['id'] = $item['id'];
             $survey['name'] = $item['name'];
             $survey['project'] = $item['project']['name'];
@@ -30,8 +29,6 @@ class UserController extends Controller
         }
         echo json_encode($surveys);
     }
-
-
 
     /**
      * Display a listing of the resource.

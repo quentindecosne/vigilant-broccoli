@@ -4,7 +4,6 @@ namespace Database\Factories;
 
 use Illuminate\Database\Eloquent\Factories\Factory;
 
-
 /**
  * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\Project>
  */
@@ -21,10 +20,9 @@ class ProjectFactory extends Factory
             'name' => fake()->name(),
             'contact' => fake()->name(),
             'address' => fake()->address(),
-            'phone' => fake()->numberBetween(1111111111,9999999999),
+            'phone' => fake()->numberBetween(1111111111, 9999999999),
             'email' => fake()->unique()->safeEmail(),
             'created_at' => fake()->iso8601(),
         ];
     }
-
 }

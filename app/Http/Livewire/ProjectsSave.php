@@ -9,10 +9,20 @@ use WireUi\Traits\Actions;
 class ProjectsSave extends ModalComponent
 {
     use Actions;
+
     public Project $project;
 
-    public $name, $contact, $email, $phone, $address, $project_id;
+    public $name;
 
+    public $contact;
+
+    public $email;
+
+    public $phone;
+
+    public $address;
+
+    public $project_id;
 
     /**
      * List of add/edit form rules
@@ -31,13 +41,13 @@ class ProjectsSave extends ModalComponent
         $this->address = $project->address;
     }
 
-
     public function render()
     {
         return view('livewire.projects-save');
     }
 
-    public function save(){
+    public function save()
+    {
         $this->validate();
         try {
             Project::create([
@@ -62,7 +72,8 @@ class ProjectsSave extends ModalComponent
         }
     }
 
-    public function edit(Project $project){
+    public function edit(Project $project)
+    {
         $this->validate();
         try {
             $project = Project::findOrFail($this->project_id);
@@ -72,7 +83,7 @@ class ProjectsSave extends ModalComponent
             $project->phone = $this->phone;
             $project->address = $this->address;
             $project->update();
-          
+
             $this->emit('refreshTable');
             $this->closeModal();
             activity('recent')->event('info')->withProperties(['project' => $this->name, 'project_id' => $this->project_id])->log(':causer.name has modified the project: :properties.project');

@@ -3,13 +3,22 @@
 namespace App\Http\Livewire;
 
 use App\Models\Plant;
-use Illuminate\Support\Str;
-use Illuminate\Support\Carbon;
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Support\Carbon;
+use Illuminate\Support\Str;
+use PowerComponents\LivewirePowerGrid\Button;
+use PowerComponents\LivewirePowerGrid\Column;
+use PowerComponents\LivewirePowerGrid\Exportable;
 use PowerComponents\LivewirePowerGrid\Filters\Filter;
-use PowerComponents\LivewirePowerGrid\Rules\{Rule, RuleActions};
-use PowerComponents\LivewirePowerGrid\Traits\{ActionButton, WithExport};
-use PowerComponents\LivewirePowerGrid\{Button, Column, Exportable, Footer, Header, PowerGrid, PowerGridComponent, PowerGridColumns};
+use PowerComponents\LivewirePowerGrid\Footer;
+use PowerComponents\LivewirePowerGrid\Header;
+use PowerComponents\LivewirePowerGrid\PowerGrid;
+use PowerComponents\LivewirePowerGrid\PowerGridColumns;
+use PowerComponents\LivewirePowerGrid\PowerGridComponent;
+use PowerComponents\LivewirePowerGrid\Rules\Rule;
+use PowerComponents\LivewirePowerGrid\Rules\RuleActions;
+use PowerComponents\LivewirePowerGrid\Traits\ActionButton;
+use PowerComponents\LivewirePowerGrid\Traits\WithExport;
 
 final class PlantsTable extends PowerGridComponent
 {
@@ -96,16 +105,16 @@ final class PlantsTable extends PowerGridComponent
 
             ->addColumn('botanical_name')
 
-           /** Example of custom column using a closure **/
+            /** Example of custom column using a closure **/
             ->addColumn('botanical_name_lower', fn (Plant $model) => strtolower(e($model->botanical_name)))
 
             ->addColumn('family_name')
             ->addColumn('exists_in_plantekey', function (Plant $model) {
-                return ($model->plantekey_id ? 'Yes' : 'No');
+                return $model->plantekey_id ? 'Yes' : 'No';
             })
             ->addColumn('plantekey_id', function (Plant $model) {
-                return ($model->plantekey_id ?
-                '<a target="_blank" href="https://plantekey.com/plants/' . strtolower(e($model->family_name)) . '/'. Str::replace(' ', '-', strtolower(e($model->botanical_name))) . '/">'.
+                return $model->plantekey_id ?
+                '<a target="_blank" href="https://plantekey.com/plants/'.strtolower(e($model->family_name)).'/'.Str::replace(' ', '-', strtolower(e($model->botanical_name))).'/">'.
                 '<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6 text-green-500 text-center">
                     <path stroke-linecap="round" stroke-linejoin="round" d="M9 12.75L11.25 15 15 9.75M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
                 </svg></a>
@@ -113,7 +122,7 @@ final class PlantsTable extends PowerGridComponent
               '<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6 text-red-500 text-center">
               <path stroke-linecap="round" stroke-linejoin="round" d="M9.75 9.75l4.5 4.5m0-4.5l-4.5 4.5M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
             </svg>
-            ');
+            ';
             })
             ->addColumn('created_at_formatted', fn (Plant $model) => Carbon::parse($model->created_at)->format('d/m/Y'));
     }
@@ -127,11 +136,11 @@ final class PlantsTable extends PowerGridComponent
     |
     */
 
-     /**
-      * PowerGrid Columns.
-      *
-      * @return array<int, Column>
-      */
+    /**
+     * PowerGrid Columns.
+     *
+     * @return array<int, Column>
+     */
     public function columns(): array
     {
         return [

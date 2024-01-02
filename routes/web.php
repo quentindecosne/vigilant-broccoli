@@ -1,12 +1,12 @@
 <?php
 
 use App\Http\Controllers\DashboardController;
-use App\Http\Controllers\PlantSurveyMasterController;
-use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\PlantController;
-use App\Http\Controllers\SurveyController;
+use App\Http\Controllers\PlantSurveyMasterController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\ProjectController;
+use App\Http\Controllers\SurveyController;
+use Illuminate\Support\Facades\Route;
 
 /*
 |--------------------------------------------------------------------------
@@ -26,7 +26,6 @@ Route::get('/', function () {
         return view('auth.login'); // You can also use 'auth.register' if you want to direct to the registration page.
     }
 });
-
 
 Route::middleware('auth')->group(function () {
     Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
