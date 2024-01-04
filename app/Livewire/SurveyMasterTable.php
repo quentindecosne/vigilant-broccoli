@@ -17,12 +17,10 @@ use PowerComponents\LivewirePowerGrid\PowerGridComponent;
 use PowerComponents\LivewirePowerGrid\Responsive;
 use PowerComponents\LivewirePowerGrid\Rules\Rule;
 use PowerComponents\LivewirePowerGrid\Rules\RuleActions;
-use PowerComponents\LivewirePowerGrid\Traits\ActionButton;
 use PowerComponents\LivewirePowerGrid\Traits\WithExport;
 
 final class SurveyMasterTable extends PowerGridComponent
 {
-    use ActionButton;
     use WithExport;
 
     public int $perPage = 50;
@@ -270,6 +268,7 @@ final class SurveyMasterTable extends PowerGridComponent
                 ->searchable()
                 ->visibleInExport(true),
             Column::make('Master Survey ID', 'master_survey_id')->hidden(),
+
         ];
     }
 
