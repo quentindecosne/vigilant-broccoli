@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Livewire;
+namespace App\Livewire;
 
 use App\Models\Project;
 use App\Models\Survey;
@@ -54,7 +54,7 @@ class SurveysSave extends ModalComponent
                 'name' => $this->name,
                 'project_id' => $this->project_id,
             ]);
-            $this->emit('refreshTable');
+            $this->dispatch('refreshTable');
             $this->closeModal();
             activity('recent')->event('success')->withProperties(['survey' => $this->name, 'survey_id' => $survey->id])->log(':causer.name has created the survey: :properties.survey');
             $this->notification()->info(
@@ -78,7 +78,7 @@ class SurveysSave extends ModalComponent
             $survey->project_id = $this->project_id;
             $survey->update();
 
-            $this->emit('refreshTable');
+            $this->dispatch('refreshTable');
             $this->closeModal();
             activity('recent')->event('info')->withProperties(['survey' => $this->name, 'survey_id' => $this->survey_id])->log(':causer.name has modified the survey: :properties.survey');
             $this->notification()->info(

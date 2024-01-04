@@ -16,7 +16,7 @@
                             <label for="name" class="block text-sm font-medium text-gray-700 sm:mt-px sm:pt-2">Survey Name </label>
                             <div class="mt-1 sm:mt-0 sm:col-span-2">
                               <div class="max-w-lg flex rounded-md shadow-sm">
-{{--                                <input wire:model="name" type="text" name="name" id="name" autocomplete="name" class="block w-full focus:ring-indigo-500 focus:border-indigo-500 min-w-0 rounded sm:text-sm border-gray-300">--}}
+{{--                                <input wire:model.live="name" type="text" name="name" id="name" autocomplete="name" class="block w-full focus:ring-indigo-500 focus:border-indigo-500 min-w-0 rounded sm:text-sm border-gray-300">--}}
                               </div>
                             </div>
                           </div>
@@ -35,6 +35,6 @@ d
 {{--        @else--}}
 {{--          <button wire:click="save()" class="modal-action-button modal-save-button">Save</button>--}}
 {{--        @endif      --}}
-{{--        <button wire:click="$emit('closeModal')"  type="button" class="modal-cancel-button">Cancel</button>--}}
+{{--        <button wire:click="$dispatch('closeModal')"  type="button" class="modal-cancel-button">Cancel</button>--}}
 {{--    </div>--}}
 </div>

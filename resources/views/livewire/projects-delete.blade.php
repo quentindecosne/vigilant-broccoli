@@ -16,6 +16,6 @@
    </div>
    <div class="bg-gray-50 px-4 py-3 sm:px-6 sm:flex sm:flex-row-reverse">
       <button wire:click="delete()" class="modal-action-button modal-delete-button">Delete</button>
-      <button wire:click="$emit('closeModal')"  type="button" class="modal-cancel-button">Cancel</button>
+      <button wire:click="$dispatch('closeModal')"  type="button" class="modal-cancel-button">Cancel</button>
    </div>
 </div>

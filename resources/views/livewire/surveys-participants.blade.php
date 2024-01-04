@@ -11,7 +11,7 @@
 
                 <div class="pt-8 pb-2 w-9/12 flex">
                   {{-- <label for="users" class="block text-sm font-medium text-gray-700">Surveyers</label> --}}
-                  <select wire:model="add_user"  id="users" name="users" class="mt-1 block w-full pl-3 pr-10 py-2 text-base border-gray-300 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm rounded-md">
+                  <select wire:model.live="add_user"  id="users" name="users" class="mt-1 block w-full pl-3 pr-10 py-2 text-base border-gray-300 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm rounded-md">
                     <option>-- Select --</option>
                     @foreach ($users as $user)
                       @if (!Arr::has($participants, $user->id))
@@ -58,6 +58,6 @@
     </div>
     <div class="bg-gray-50 px-4 py-3 sm:px-6 sm:flex sm:flex-row-reverse">
         <button wire:click="save()" class="modal-action-button modal-save-button">Save</button>
-        <button wire:click="$emit('closeModal')"  type="button" class="modal-cancel-button">Cancel</button>
+        <button wire:click="$dispatch('closeModal')"  type="button" class="modal-cancel-button">Cancel</button>
     </div>
 </div>

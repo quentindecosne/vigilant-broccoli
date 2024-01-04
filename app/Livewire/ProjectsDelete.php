@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Livewire;
+namespace App\Livewire;
 
 use App\Models\Project;
 use LivewireUI\Modal\ModalComponent;
@@ -22,7 +22,7 @@ class ProjectsDelete extends ModalComponent
         try {
             $project = $this->project;
             $this->project->delete();
-            $this->emit('refreshTable');
+            $this->dispatch('refreshTable');
             $this->closeModal();
             activity('recent')->event('warning')->withProperties(['project' => $project->name, 'project_id' => $project->project_id])->log(':causer.name has deleted the project: :properties.project');
             $this->notification()->info(

@@ -16,7 +16,7 @@
                             <label for="name" class="block text-sm font-medium text-gray-700 sm:mt-px sm:pt-2">Survey Name </label>
                             <div class="mt-1 sm:mt-0 sm:col-span-2">
                               <div class="max-w-lg flex rounded-md shadow-sm">
-                                <input wire:model="name" type="text" name="name" id="name" autocomplete="name" class="block w-full focus:ring-indigo-500 focus:border-indigo-500 min-w-0 rounded sm:text-sm border-gray-300">
+                                <input wire:model.live="name" type="text" name="name" id="name" autocomplete="name" class="block w-full focus:ring-indigo-500 focus:border-indigo-500 min-w-0 rounded sm:text-sm border-gray-300">
                               </div>
                             </div>
                           </div>
@@ -24,7 +24,7 @@
                           <div class="sm:grid sm:grid-cols-3 sm:gap-4 sm:items-start sm:border-t sm:border-gray-200 sm:pt-5">
                             <label for="project" class="block text-sm font-medium text-gray-700 sm:mt-px sm:pt-2"> Project </label>
                             <div class="mt-1 sm:mt-0 sm:col-span-2">
-                              <select wire:model="project_id" id="project_id" name="project_id" autocomplete="off" class="max-w-lg block focus:ring-indigo-500 focus:border-indigo-500 w-full shadow-sm sm:max-w-xs sm:text-sm border-gray-300 rounded-md">
+                              <select wire:model.live="project_id" id="project_id" name="project_id" autocomplete="off" class="max-w-lg block focus:ring-indigo-500 focus:border-indigo-500 w-full shadow-sm sm:max-w-xs sm:text-sm border-gray-300 rounded-md">
                                 <option value="" >-- Select --</option>
                                 @foreach ($projects as $project)
                                     <option value="{{ $project->id }}" >{{ $project->name }}</option>
@@ -46,6 +46,6 @@
         @else
           <button wire:click="save()" class="modal-action-button modal-save-button">Save</button>
         @endif      
-        <button wire:click="$emit('closeModal')"  type="button" class="modal-cancel-button">Cancel</button>
+        <button wire:click="$dispatch('closeModal')"  type="button" class="modal-cancel-button">Cancel</button>
     </div>
 </div>

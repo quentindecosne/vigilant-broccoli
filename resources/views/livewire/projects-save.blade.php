@@ -16,7 +16,7 @@
                             <label for="name" class="block text-sm font-medium text-gray-700 sm:mt-px sm:pt-2">Project Name </label>
                             <div class="mt-1 sm:mt-0 sm:col-span-2">
                               <div class="max-w-lg flex rounded-md shadow-sm">
-                                <input wire:model="name" type="text" name="name" id="name" autocomplete="name" class="block w-full focus:ring-indigo-500 focus:border-indigo-500 min-w-0 rounded sm:text-sm border-gray-300">
+                                <input wire:model.live="name" type="text" name="name" id="name" autocomplete="name" class="block w-full focus:ring-indigo-500 focus:border-indigo-500 min-w-0 rounded sm:text-sm border-gray-300">
                               </div>
                             </div>
                           </div>
@@ -25,7 +25,7 @@
                             <label for="contact_name" class="block text-sm font-medium text-gray-700 sm:mt-px sm:pt-2"> Contact name </label>
                             <div class="mt-1 sm:mt-0 sm:col-span-2">
                               <div class="max-w-lg flex rounded-md shadow-sm">
-                                <input wire:model="contact" type="text" name="contact_name" id="contact_name" autocomplete="contact_name" class="flex-1 block w-full focus:ring-indigo-500 focus:border-indigo-500 min-w-0 rounded-none rounded-r-md sm:text-sm border-gray-300">
+                                <input wire:model.live="contact" type="text" name="contact_name" id="contact_name" autocomplete="contact_name" class="flex-1 block w-full focus:ring-indigo-500 focus:border-indigo-500 min-w-0 rounded-none rounded-r-md sm:text-sm border-gray-300">
                               </div>
                             </div>
                           </div>
@@ -34,7 +34,7 @@
                             <label for="address" class="block text-sm font-medium text-gray-700 sm:mt-px sm:pt-2"> Address </label>
                             <div class="mt-1 sm:mt-0 sm:col-span-2">
                               <div class="max-w-lg flex rounded-md shadow-sm">
-                                <input wire:model="address" type="text" name="address" id="address" autocomplete="address" class="flex-1 block w-full focus:ring-indigo-500 focus:border-indigo-500 min-w-0 rounded sm:text-sm border-gray-300">
+                                <input wire:model.live="address" type="text" name="address" id="address" autocomplete="address" class="flex-1 block w-full focus:ring-indigo-500 focus:border-indigo-500 min-w-0 rounded sm:text-sm border-gray-300">
                               </div>
                             </div>
                           </div>
@@ -43,7 +43,7 @@
                             <label for="email_address" class="block text-sm font-medium text-gray-700 sm:mt-px sm:pt-2"> Email address </label>
                             <div class="mt-1 sm:mt-0 sm:col-span-2">
                               <div class="max-w-lg flex rounded-md shadow-sm">
-                                <input wire:model="email" type="email" name="email_address" id="email_address" autocomplete="email_address" class="flex-1 block w-full focus:ring-indigo-500 focus:border-indigo-500 min-w-0 rounded sm:text-sm border-gray-300">
+                                <input wire:model.live="email" type="email" name="email_address" id="email_address" autocomplete="email_address" class="flex-1 block w-full focus:ring-indigo-500 focus:border-indigo-500 min-w-0 rounded sm:text-sm border-gray-300">
                               </div>
                             </div>
                           </div>
@@ -52,7 +52,7 @@
                             <label for="phone" class="block text-sm font-medium text-gray-700 sm:mt-px sm:pt-2"> Phone </label>
                             <div class="mt-1 sm:mt-0 sm:col-span-2">
                               <div class="max-w-lg flex rounded-md shadow-sm">
-                                <input wire:model="phone" type="text" name="phone" id="phone" autocomplete="phone" class="flex-1 block w-full focus:ring-indigo-500 focus:border-indigo-500 min-w-0 rounded sm:text-sm border-gray-300">
+                                <input wire:model.live="phone" type="text" name="phone" id="phone" autocomplete="phone" class="flex-1 block w-full focus:ring-indigo-500 focus:border-indigo-500 min-w-0 rounded sm:text-sm border-gray-300">
                               </div>
                             </div>
                           </div>
@@ -69,6 +69,6 @@
         @else
           <button wire:click="save()" class="modal-action-button modal-save-button">Save</button>
         @endif      
-        <button wire:click="$emit('closeModal')"  type="button" class="modal-cancel-button">Cancel</button>
+        <button wire:click="$dispatch('closeModal')"  type="button" class="modal-cancel-button">Cancel</button>
     </div>
 </div>

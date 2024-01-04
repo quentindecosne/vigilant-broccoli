@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Livewire;
+namespace App\Livewire;
 
 use App\Models\Survey;
 use LivewireUI\Modal\ModalComponent;
@@ -22,7 +22,7 @@ class SurveysDelete extends ModalComponent
         try {
             $survey = $this->survey;
             $this->survey->delete();
-            $this->emit('refreshTable');
+            $this->dispatch('refreshTable');
             $this->closeModal();
             activity('recent')->event('warning')->withProperties(['survey' => $survey->name, 'survey_id' => $survey->id])->log(':causer.name has deleted the survey: :properties.survey');
             $this->notification()->info(

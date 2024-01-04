@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Livewire;
+namespace App\Livewire;
 
 use Illuminate\Database\Query\Builder;
 use Illuminate\Support\Carbon;

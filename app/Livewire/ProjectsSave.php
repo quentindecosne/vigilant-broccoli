@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Livewire;
+namespace App\Livewire;
 
 use App\Models\Project;
 use LivewireUI\Modal\ModalComponent;
@@ -57,7 +57,7 @@ class ProjectsSave extends ModalComponent
                 'phone' => $this->phone,
                 'address' => $this->address,
             ]);
-            $this->emit('refreshTable');
+            $this->dispatch('refreshTable');
             $this->closeModal();
             activity('recent')->event('success')->withProperties(['project' => $this->name, 'project_id' => $this->project_id])->log(':causer.name has created the project: :properties.project');
             $this->notification()->info(
@@ -84,7 +84,7 @@ class ProjectsSave extends ModalComponent
             $project->address = $this->address;
             $project->update();
 
-            $this->emit('refreshTable');
+            $this->dispatch('refreshTable');
             $this->closeModal();
             activity('recent')->event('info')->withProperties(['project' => $this->name, 'project_id' => $this->project_id])->log(':causer.name has modified the project: :properties.project');
             $this->notification()->info(
