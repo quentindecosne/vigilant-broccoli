@@ -2,9 +2,6 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Plant;
-use Illuminate\Http\Request;
-
 class PlantController extends Controller
 {
     /**
@@ -14,5 +11,4 @@ class PlantController extends Controller
     {
         return view('plants.index');
     }
-
- }
+}

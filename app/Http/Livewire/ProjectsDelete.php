@@ -9,15 +9,17 @@ use WireUi\Traits\Actions;
 class ProjectsDelete extends ModalComponent
 {
     use Actions;
+
     public Project $project;
 
     public function render()
     {
         return view('livewire.projects-delete');
-    }    
+    }
 
-    public function delete(){
-        try{
+    public function delete()
+    {
+        try {
             $project = $this->project;
             $this->project->delete();
             $this->emit('refreshTable');
@@ -34,7 +36,4 @@ class ProjectsDelete extends ModalComponent
             );
         }
     }
-
-
-
 }

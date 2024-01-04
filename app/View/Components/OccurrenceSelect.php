@@ -9,15 +9,19 @@ use Illuminate\View\Component;
 class OccurrenceSelect extends Component
 {
     public $url;
+
     public $type;
+
     public $selected;
+
     public $options;
+
     /**
      * Create a new component instance.
      */
     public function __construct($url, $type, $selected = '')
     {
-        $this->url= $url;
+        $this->url = $url;
         $this->type = $type;
         $this->selected = $selected;
         $this->options = ['present', 'rare', 'occasional', 'common', 'locally-abundant', 'dominant'];
