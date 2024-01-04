@@ -8,7 +8,7 @@ use Illuminate\Support\Carbon;
 use PowerComponents\LivewirePowerGrid\Button;
 use PowerComponents\LivewirePowerGrid\Column;
 use PowerComponents\LivewirePowerGrid\Exportable;
-use PowerComponents\LivewirePowerGrid\Filters\Filter;
+use PowerComponents\LivewirePowerGrid\Facades\Filter;
 use PowerComponents\LivewirePowerGrid\Footer;
 use PowerComponents\LivewirePowerGrid\Header;
 use PowerComponents\LivewirePowerGrid\PowerGrid;
@@ -85,7 +85,7 @@ final class SurveysTable extends PowerGridComponent
     /**
      * PowerGrid datasource.
      *
-     * @return Builder<\App\Models\Survey>
+     * @return Builder<Survey>
      */
     public function datasource(): Builder
     {
@@ -267,6 +267,10 @@ final class SurveysTable extends PowerGridComponent
         ];
     }
     */
+    public function refreshTable(): void
+    {
+        $this->dispatch('pg:eventRefresh-default');
+    }
 
     protected function getListeners()
     {
@@ -276,10 +280,5 @@ final class SurveysTable extends PowerGridComponent
                 'refreshTable',
             ]
         );
-    }
-
-    public function refreshTable(): void
-    {
-        $this->dispatch('pg:eventRefresh-default');
     }
 }
