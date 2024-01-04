@@ -15,12 +15,10 @@ use PowerComponents\LivewirePowerGrid\PowerGridComponent;
 use PowerComponents\LivewirePowerGrid\Responsive;
 use PowerComponents\LivewirePowerGrid\Rules\Rule;
 use PowerComponents\LivewirePowerGrid\Rules\RuleActions;
-use PowerComponents\LivewirePowerGrid\Traits\ActionButton;
 use PowerComponents\LivewirePowerGrid\Traits\WithExport;
 
 final class PlantSurveyUserTable extends PowerGridComponent
 {
-    use ActionButton;
     use WithExport;
 
     public Survey $survey;
@@ -158,7 +156,7 @@ final class PlantSurveyUserTable extends PowerGridComponent
             Column::make('Number present', 'number_present'),
             Column::make('Occurrence', 'occurrence'),
             Column::make('Regeneration', 'regeneration'),
-
+            Column::action('Action'),
             // Column::make('Note', 'note')
             //     ->sortable()
             //     ->searchable(),
