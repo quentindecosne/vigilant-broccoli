@@ -6,7 +6,6 @@ use Illuminate\Database\Query\Builder;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\Blade;
 use Illuminate\Support\Facades\DB;
-use PowerComponents\LivewirePowerGrid\Button;
 use PowerComponents\LivewirePowerGrid\Column;
 use PowerComponents\LivewirePowerGrid\Exportable;
 use PowerComponents\LivewirePowerGrid\Filters\Filter;
@@ -127,7 +126,7 @@ final class SurveyMasterTable extends PowerGridComponent
                 $present = explode(',', $model->participant_number_present);
                 $num_present = '';
                 $i = 0;
-                $colors = ['teal', 'green', 'amber', 'lime', 'indigo', 'purple'];
+                $colors = ['teal', 'green', 'amber', 'lime', 'indigo', 'purple', 'rose', 'pink', 'fuchsia', 'violet', 'sky', 'blue'];
                 foreach ($present as $num) {
                     //                    $num_present .= $num.', ';
                     $num_present .= '<span class="ml-1 inline-flex items-center px-2 py-0.5 rounded text-xs font-medium bg-'.$colors[$i].'-100 text-'.$colors[$i].'-800">'.$num.'</span>';
