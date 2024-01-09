@@ -141,7 +141,7 @@ final class SurveyMasterTable extends PowerGridComponent
             })
             ->addColumn('occurrence_participant', function ($model) {
                 $occurrences = explode(',', $model->participant_occurrence);
-                $colors = ['rare' => 'sky', 'abundant' => 'blue', 'occasional' => 'indigo', 'common' => 'violet'];
+                $colors = ['present' => 'sky', 'rare' => 'blue', 'occasional' => 'indigo', 'common' => 'violet', 'abundant' => 'purple', 'dominant' => 'fuchsia'];
                 $data = '';
                 foreach ($occurrences as $occ) {
                     if ($occ != '') {
@@ -165,7 +165,7 @@ final class SurveyMasterTable extends PowerGridComponent
             ->addColumn('plant_id')
             ->addColumn('regeneration_participant', function ($model) {
                 $regenerations = explode(',', $model->participant_regeneration);
-                $colors = ['rare' => 'rose', 'abundant' => 'pink', 'occasional' => 'fuchsia', 'common' => 'purple'];
+                $colors = ['present' => 'sky', 'rare' => 'blue', 'occasional' => 'indigo', 'common' => 'violet', 'abundant' => 'purple', 'dominant' => 'fuchsia'];
                 $data = '';
                 foreach ($regenerations as $reg) {
                     if ($reg != '') {
