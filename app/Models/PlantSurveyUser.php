@@ -59,7 +59,7 @@ class PlantSurveyUser extends Model
 
     public function storePlantsBySurveyId($survey, $user, $plants, $surveyed_at)
     {
-        $this->deletePlantsBySurveyId($survey->id, $user->id);
+        $this->deletePlantsBySurveyId($survey->survey_id, $user->id);
         $completed_at = Carbon::now();
         DB::table('survey_user')
             ->where('id', '=', $survey->survey_id)
@@ -107,6 +107,6 @@ class PlantSurveyUser extends Model
 
     public function deletePlantsBySurveyId($id, $user_id)
     {
-        return PlantSurveyUser::where('survey_id', '=', $id)->where('user_id', '=', $user_id)->delete();
+        return PlantSurveyUser::where('survey_id', $id)->where('user_id', $user_id)->delete();
     }
 }
