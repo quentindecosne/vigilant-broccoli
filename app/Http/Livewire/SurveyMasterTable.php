@@ -14,8 +14,6 @@ use PowerComponents\LivewirePowerGrid\Header;
 use PowerComponents\LivewirePowerGrid\PowerGrid;
 use PowerComponents\LivewirePowerGrid\PowerGridColumns;
 use PowerComponents\LivewirePowerGrid\PowerGridComponent;
-use PowerComponents\LivewirePowerGrid\Responsive;
-use PowerComponents\LivewirePowerGrid\Rules\Rule;
 use PowerComponents\LivewirePowerGrid\Rules\RuleActions;
 use PowerComponents\LivewirePowerGrid\Traits\ActionButton;
 use PowerComponents\LivewirePowerGrid\Traits\WithExport;
@@ -48,11 +46,11 @@ final class SurveyMasterTable extends PowerGridComponent
             Exportable::make('tree-tracker_survey_'.Carbon::now())
                 ->striped()
                 ->type(Exportable::TYPE_XLS, Exportable::TYPE_CSV),
-            Header::make(),
+            Header::make()->showToggleColumns(),
             Footer::make()
                 ->showPerPage($this->perPage, $this->perPageValues)
                 ->showRecordCount(),
-            Responsive::make()->fixedColumns('family_name', 'botanical_name', Responsive::ACTIONS_COLUMN_NAME),
+            //            Responsive::make()->fixedColumns('family_name', 'botanical_name', Responsive::ACTIONS_COLUMN_NAME),
 
         ];
     }
