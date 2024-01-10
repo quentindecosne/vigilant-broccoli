@@ -15,7 +15,6 @@ use PowerComponents\LivewirePowerGrid\PowerGrid;
 use PowerComponents\LivewirePowerGrid\PowerGridColumns;
 use PowerComponents\LivewirePowerGrid\PowerGridComponent;
 use PowerComponents\LivewirePowerGrid\Responsive;
-use PowerComponents\LivewirePowerGrid\Rules\Rule;
 use PowerComponents\LivewirePowerGrid\Rules\RuleActions;
 use PowerComponents\LivewirePowerGrid\Traits\ActionButton;
 use PowerComponents\LivewirePowerGrid\Traits\WithExport;
@@ -82,7 +81,7 @@ final class ProjectsTable extends PowerGridComponent
     /**
      * PowerGrid datasource.
      *
-     * @return Builder<\App\Models\Project>
+     * @return Builder<Project>
      */
     public function datasource(): Builder
     {
@@ -259,6 +258,12 @@ final class ProjectsTable extends PowerGridComponent
 
     //     ];
     // }
+    public function refreshTable(): void
+    {
+        $this->emit('pg:eventRefresh-default');
+    }
+
+
 
     protected function getListeners()
     {
@@ -268,10 +273,5 @@ final class ProjectsTable extends PowerGridComponent
                 'refreshTable',
             ]
         );
-    }
-
-    public function refreshTable(): void
-    {
-        $this->emit('pg:eventRefresh-default');
     }
 }
