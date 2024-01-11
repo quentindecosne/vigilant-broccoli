@@ -24,7 +24,7 @@ class OccurrenceSelect extends Component
         $this->url = $url;
         $this->type = $type;
         $this->selected = $selected;
-        $this->options = ['present', 'rare', 'occasional', 'common', 'locally-abundant', 'dominant'];
+        $this->options = ['abundant', 'common', 'dominant', 'occasional', 'present', 'rare'];
     }
 
     /**
