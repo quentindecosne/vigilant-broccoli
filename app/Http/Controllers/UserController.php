@@ -25,8 +25,8 @@ class UserController extends Controller
             $survey['project'] = $item['project']['name'];
             $survey['address'] = $item['project']['address'];
             $survey['created_at'] = Carbon::createFromFormat('Y-m-d H:i:s', $item['created_at'])->format('Y-m-d');
-            $survey['surveyed_at'] = Carbon::createFromFormat('Y-m-d H:i:s', $item['created_at'])->format('Y-m-d');
-            $survey['completed_at'] = Carbon::createFromFormat('Y-m-d H:i:s', $item['created_at'])->format('Y-m-d');
+            $survey['surveyed_at'] = Carbon::createFromFormat('Y-m-d H:i:s', $item['surveyed_at'])->format('Y-m-d');
+            $survey['completed_at'] = Carbon::createFromFormat('Y-m-d H:i:s', $item['completed_at'])->format('Y-m-d');
             $surveys[] = $survey;
         }
         echo json_encode($surveys);
