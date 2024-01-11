@@ -263,8 +263,6 @@ final class ProjectsTable extends PowerGridComponent
         $this->emit('pg:eventRefresh-default');
     }
 
-
-
     protected function getListeners()
     {
         return array_merge(
