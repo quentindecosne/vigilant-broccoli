@@ -28,7 +28,7 @@ class Survey extends Model
     }
 
     /**
-     * Get the users participating to that survey.
+     * Get the users participating in that survey.
      */
     public function participants(): BelongsToMany
     {
