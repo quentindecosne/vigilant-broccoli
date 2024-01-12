@@ -49,6 +49,6 @@ class User extends Authenticatable
      */
     public function surveys(): BelongsToMany
     {
-        return $this->belongsToMany(Survey::class);
+        return $this->belongsToMany(Survey::class)->withPivot('completed_at', 'surveyed_at');
     }
 }

@@ -11,7 +11,13 @@ class Survey extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['name', 'project_id'];
+    protected $fillable = ['name', 'project_id', 'surveyed_at', 'completed_at'];
+
+    protected $casts = [
+        'created_at' => 'datetime',
+        'surveyed_at' => 'datetime',
+        'completed_at' => 'datetime',
+    ];
 
     /**
      * Get the project that owns the survey.
@@ -26,6 +32,6 @@ class Survey extends Model
      */
     public function participants(): BelongsToMany
     {
-        return $this->belongsToMany(User::class);
+        return $this->belongsToMany(User::class)->withPivot('completed_at', 'surveyed_at');
     }
 }
