@@ -62,7 +62,8 @@ class PlantSurveyUser extends Model
         $this->deletePlantsBySurveyId($survey->survey_id, $user->id);
         $completed_at = Carbon::now();
         DB::table('survey_user')
-            ->where('id', '=', $survey->survey_id)
+            ->where('survey_id', '=', $survey->survey_id)
+            ->where('user_id', '=', $user->id)
             ->update(['surveyed_at' => $surveyed_at, 'completed_at' => $completed_at]);
 
         activity('recent')->by($user)->event('success')
