@@ -76,8 +76,8 @@ class PlantSurveyUser extends Model
                 'user_id' => $user->id,
                 'plant_id' => $plant->plant_id,
                 'number_present' => isset($plant->number_present) ? $plant->number_present : 0,
-                'occurrence' => $plant->occurrence ? $plant->occurrence : '',
-                'regeneration' => $plant->regeneration ? $plant->regeneration : '',
+                'occurrence' => $plant->occurrence ? $plant->occurrence : 'error',
+                'regeneration' => $plant->regeneration ? $plant->regeneration : 'not-observed',
                 'note' => $plant->note,
             ]);
             $master_survey_plant = PlantSurveyMaster::where('survey_id', '=', $survey->survey_id)
@@ -88,8 +88,8 @@ class PlantSurveyUser extends Model
                     'survey_id' => $survey->survey_id,
                     'plant_id' => $plant->plant_id,
                     'number_present' => isset($plant->number_present) ? $plant->number_present : 0,
-                    'occurrence' => $plant->occurrence ? $plant->occurrence : '',
-                    'regeneration' => $plant->regeneration ? $plant->regeneration : '',
+                    'occurrence' => $plant->occurrence ? $plant->occurrence : 'error',
+                    'regeneration' => $plant->regeneration ? $plant->regeneration : 'not-observed',
                     'note' => $plant->note,
                 ]);
             } else {
