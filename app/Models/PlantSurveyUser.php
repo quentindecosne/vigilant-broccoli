@@ -30,10 +30,15 @@ class PlantSurveyUser extends Model
         if (! $plants_list->isEmpty()) {
             foreach ($plants_list as $plant) {
                 $names = explode(' ', strtolower($plant->botanical_name));
+                if (isset($plant->number_present)) {
+                    $number_present = $plant->number_present;
+                } else {
+                    $number_present = 0;
+                }
                 $arr['plant_id'] = $plant->id;
                 $arr['plant_genus'] = $names[0];
                 $arr['plant_species'] = $names[1];
-                $arr['number_present'] = $plant->number_present ? $plant->number_present : 0;
+                $arr['number_present'] = $number_present;
                 $arr['occurrence'] = $plant->occurrence ? $plant->occurrence : '';
                 $arr['regeneration'] = $plant->regeneration ? $plant->regeneration : '';
                 $arr['note'] = $plant->note ? $plant->note : '';
