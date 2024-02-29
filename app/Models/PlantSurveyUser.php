@@ -30,15 +30,10 @@ class PlantSurveyUser extends Model
         if (! $plants_list->isEmpty()) {
             foreach ($plants_list as $plant) {
                 $names = explode(' ', strtolower($plant->botanical_name));
-                if (isset($plant->number_present)) {
-                    $number_present = $plant->number_present;
-                } else {
-                    $number_present = 0;
-                }
                 $arr['plant_id'] = $plant->id;
                 $arr['plant_genus'] = $names[0];
                 $arr['plant_species'] = $names[1];
-                $arr['number_present'] = $number_present;
+                $arr['number_present'] = isset($plant->number_present) ? $plant->number_present : 0;
                 $arr['occurrence'] = $plant->occurrence ? $plant->occurrence : '';
                 $arr['regeneration'] = $plant->regeneration ? $plant->regeneration : '';
                 $arr['note'] = $plant->note ? $plant->note : '';
@@ -80,9 +75,9 @@ class PlantSurveyUser extends Model
                 'survey_id' => $survey->survey_id,
                 'user_id' => $user->id,
                 'plant_id' => $plant->plant_id,
-                'number_present' => $plant->number_present,
-                'occurrence' => $plant->occurrence,
-                'regeneration' => $plant->regeneration,
+                'number_present' => isset($plant->number_present) ? $plant->number_present : 0,
+                'occurrence' => $plant->occurrence ? $plant->occurrence : '',
+                'regeneration' => $plant->regeneration ? $plant->regeneration : '',
                 'note' => $plant->note,
             ]);
             $master_survey_plant = PlantSurveyMaster::where('survey_id', '=', $survey->survey_id)
@@ -92,9 +87,9 @@ class PlantSurveyUser extends Model
                 PlantSurveyMaster::create([
                     'survey_id' => $survey->survey_id,
                     'plant_id' => $plant->plant_id,
-                    'number_present' => $plant->number_present,
-                    'occurrence' => $plant->occurrence,
-                    'regeneration' => $plant->regeneration,
+                    'number_present' => isset($plant->number_present) ? $plant->number_present : 0,
+                    'occurrence' => $plant->occurrence ? $plant->occurrence : '',
+                    'regeneration' => $plant->regeneration ? $plant->regeneration : '',
                     'note' => $plant->note,
                 ]);
             } else {
