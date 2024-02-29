@@ -5,14 +5,14 @@
         @if ($selected == "" )
             <option value="" selected="selected">Set {{$type}}</option>
         @endif
-        @foreach ($options as $option)
+        @foreach ($options as $value=>$label)
             <option
-                    value="{{ $option }}"
-                    @if ($option == $selected)
+                    value="{{ $value }}"
+                    @if ($value == $selected)
                         selected="selected"
                     @endif
             >
-                {{ ucwords($option) }}
+                {{ $label }}
             </option>
         @endforeach
 
