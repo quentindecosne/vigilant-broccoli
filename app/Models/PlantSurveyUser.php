@@ -71,13 +71,24 @@ class PlantSurveyUser extends Model
             ->log(':causer.name has submitted their survey: :properties.survey');
 
         foreach ($plants as $plant) {
+            if ($plant->occurrence == '') {
+                $occurrence = 'error';
+            } else {
+                $occurrence = $plant->occurrence;
+            }
+
+            if ($plant->regeneration == '') {
+                $regeneration = 'not-observed';
+            } else {
+                $regeneration = $plant->regeneration;
+            }
             PlantSurveyUser::create([
                 'survey_id' => $survey->survey_id,
                 'user_id' => $user->id,
                 'plant_id' => $plant->plant_id,
                 'number_present' => isset($plant->number_present) ? $plant->number_present : 0,
-                'occurrence' => $plant->occurrence ? $plant->occurrence : 'error',
-                'regeneration' => $plant->regeneration ? $plant->regeneration : 'not-observed',
+                'occurrence' => $occurrence,
+                'regeneration' => $regeneration,
                 'note' => $plant->note,
             ]);
             $master_survey_plant = PlantSurveyMaster::where('survey_id', '=', $survey->survey_id)
@@ -88,15 +99,15 @@ class PlantSurveyUser extends Model
                     'survey_id' => $survey->survey_id,
                     'plant_id' => $plant->plant_id,
                     'number_present' => isset($plant->number_present) ? $plant->number_present : 0,
-                    'occurrence' => $plant->occurrence ? $plant->occurrence : 'error',
-                    'regeneration' => $plant->regeneration ? $plant->regeneration : 'not-observed',
+                    'occurrence' => $occurrence,
+                    'regeneration' => $regeneration,
                     'note' => $plant->note,
                 ]);
             } else {
-                if ($master_survey_plant->occurrence != $plant->occurrence) {
+                if ($master_survey_plant->occurrence != $occurrence) {
                     $master_survey_plant->occurrence = null;
                 }
-                if ($master_survey_plant->regeneration != $plant->regeneration) {
+                if ($master_survey_plant->regeneration != $regeneration) {
                     $master_survey_plant->regeneration = null;
                 }
                 $master_survey_plant->update();

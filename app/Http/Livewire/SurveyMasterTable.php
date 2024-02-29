@@ -162,7 +162,7 @@ final class SurveyMasterTable extends PowerGridComponent
             ->addColumn('plant_id')
             ->addColumn('regeneration_participant', function ($model) {
                 $regenerations = explode(',', $model->participant_regeneration);
-                $colors = ['rare' => 'blue', 'not-observed' => 'indigo', 'common' => 'violet', 'abundant' => 'purple'];
+                $colors = ['rare' => 'blue', 'not-observed' => 'amber', 'common' => 'violet', 'abundant' => 'purple'];
                 $data = '';
                 foreach ($regenerations as $reg) {
                     if ($reg != '') {
