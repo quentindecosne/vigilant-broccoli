@@ -15,7 +15,6 @@ use PowerComponents\LivewirePowerGrid\PowerGrid;
 use PowerComponents\LivewirePowerGrid\PowerGridColumns;
 use PowerComponents\LivewirePowerGrid\PowerGridComponent;
 use PowerComponents\LivewirePowerGrid\Responsive;
-use PowerComponents\LivewirePowerGrid\Rules\Rule;
 use PowerComponents\LivewirePowerGrid\Rules\RuleActions;
 use PowerComponents\LivewirePowerGrid\Traits\ActionButton;
 use PowerComponents\LivewirePowerGrid\Traits\WithExport;
@@ -85,7 +84,7 @@ final class SurveysTable extends PowerGridComponent
     /**
      * PowerGrid datasource.
      *
-     * @return Builder<\App\Models\Survey>
+     * @return Builder<Survey>
      */
     public function datasource(): Builder
     {
@@ -267,6 +266,10 @@ final class SurveysTable extends PowerGridComponent
         ];
     }
     */
+    public function refreshTable(): void
+    {
+        $this->emit('pg:eventRefresh-default');
+    }
 
     protected function getListeners()
     {
@@ -276,10 +279,5 @@ final class SurveysTable extends PowerGridComponent
                 'refreshTable',
             ]
         );
-    }
-
-    public function refreshTable(): void
-    {
-        $this->emit('pg:eventRefresh-default');
     }
 }

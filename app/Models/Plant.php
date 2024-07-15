@@ -12,6 +12,13 @@ class Plant extends Model
 
     protected $fillable = ['botanical_name', 'family_name'];
 
+    public function deleteSpeciesList($survey)
+    {
+        Plant::where('survey_id', $survey)->delete();
+
+        return true;
+    }
+
     /**
      * Get the users participating to that survey.
      */
