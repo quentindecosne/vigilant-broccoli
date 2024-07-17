@@ -40,7 +40,11 @@ class PlantSurveyUser extends Model
                 $plants = Arr::prepend($plants, $arr);
             }
         } else {
-            $plants_list = DB::table('plants')->get();
+            $plants_list = DB::table('plants')->where('survey_id', '=', $id)->get();
+            if ($plants_list->isEmpty()) {
+                $plants_list = DB::table('plants')->whereNull('survey_id')->get();
+            }
+
             foreach ($plants_list as $plant) {
                 $names = explode(' ', strtolower($plant->botanical_name));
                 $arr['plant_id'] = $plant->id;

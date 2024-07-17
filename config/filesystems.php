@@ -58,6 +58,17 @@ return [
 
     ],
 
+    'livewire' => [
+        'temporary_file_upload' => [
+            'disk' => 'local',
+            'rules' => ['required', 'file', 'mimes:csv,txt,xlx,xls,pdf', 'max:2048'], // Adjust as needed
+            'directory' => 'livewire-tmp',
+            'middleware' => null,
+            'preview_mimes' => ['image/jpeg', 'image/png', 'image/gif', 'image/bmp'],
+            'max_upload_time' => 5, // Minutes
+        ],
+    ],
+
     /*
     |--------------------------------------------------------------------------
     | Symbolic Links
