@@ -10,7 +10,7 @@ class Plant extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['botanical_name', 'family_name'];
+    protected $fillable = ['survey_id', 'botanical_name', 'family_name'];
 
     public function deleteSpeciesList($survey)
     {
