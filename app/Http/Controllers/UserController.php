@@ -25,6 +25,7 @@ class UserController extends Controller
             $survey['name'] = $item['name'];
             $survey['project'] = $item['project']['name'];
             $survey['address'] = $item['project']['address'];
+            $survey['has_species_list'] = (bool) $item['species_list'];
             $survey['created_at'] = Carbon::createFromFormat('Y-m-d H:i:s', $item['created_at'])->format('Y-m-d');
             $survey['surveyed_at'] = $item['pivot']['surveyed_at'] ? Carbon::createFromFormat('Y-m-d H:i:s', $item['pivot']['surveyed_at'])->format('Y-m-d') : '';
             $survey['completed_at'] = $item['pivot']['completed_at'] ? Carbon::createFromFormat('Y-m-d H:i:s', $item['pivot']['completed_at'])->format('Y-m-d') : '';
