@@ -59,33 +59,33 @@ class SurveysSave extends ModalComponent
     {
 
         $this->validate();
-        //try {
-        $survey = Survey::findOrFail($this->survey_id);
-        $survey->name = $this->name;
-        $survey->project_id = $this->project_id;
+        try {
+            $survey = Survey::findOrFail($this->survey_id);
+            $survey->name = $this->name;
+            $survey->project_id = $this->project_id;
 
-        if ($this->species_list) {
-            $path = $this->species_list->storeAs('public/species_list', $survey->id.'.'.$this->species_list->getClientOriginalExtension());
-            $survey->species_list = 'species_list/'.$survey->id.'.'.$this->species_list->getClientOriginalExtension();
-            Excel::import(new PlantsImport($this->survey_id), $path);
+            if ($this->species_list) {
+                $path = $this->species_list->storeAs('public/species_list', $survey->id.'.'.$this->species_list->getClientOriginalExtension());
+                $survey->species_list = 'species_list/'.$survey->id.'.'.$this->species_list->getClientOriginalExtension();
+                Excel::import(new PlantsImport($this->survey_id), $path);
+            }
+
+            $survey->update();
+
+            $this->emit('refreshTable');
+            $this->closeModal();
+            activity('recent')->event('info')->withProperties(['survey' => $this->name, 'survey_id' => $this->survey_id])->log(':causer.name has modified the survey: :properties.survey');
+            $this->notification()->info(
+                $title = 'Survey updated',
+                $description = 'Your survey was successfully updated'
+            );
+
+        } catch (Exception $ex) {
+            $this->notification()->error(
+                $title = 'Error Notification',
+                $description = 'Problem creating the new project, try again later.'
+            );
         }
-
-        $survey->update();
-
-        $this->emit('refreshTable');
-        $this->closeModal();
-        activity('recent')->event('info')->withProperties(['survey' => $this->name, 'survey_id' => $this->survey_id])->log(':causer.name has modified the survey: :properties.survey');
-        $this->notification()->info(
-            $title = 'Survey updated',
-            $description = 'Your survey was successfully updated'
-        );
-
-        //        } catch (Exception $ex) {
-        //            $this->notification()->error(
-        //                $title = 'Error Notification',
-        //                $description = 'Problem creating the new project, try again later.'
-        //            );
-        //        }
     }
 
     public function save()

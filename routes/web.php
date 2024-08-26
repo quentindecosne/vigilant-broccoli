@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\FileController;
 use App\Http\Controllers\PlantController;
 use App\Http\Controllers\PlantSurveyMasterController;
 use App\Http\Controllers\ProfileController;
@@ -39,6 +40,9 @@ Route::middleware('auth')->group(function () {
     Route::resource('plants', PlantController::class);
 
     Route::post('/master-survey/{master_id}', [PlantSurveyMasterController::class, 'update'])->name('master-survey.update');
+
+    Route::get('/download/species-list/{survey_id}', [FileController::class, 'download'])->name('download.species_list');
+
 });
 
 require __DIR__.'/auth.php';
