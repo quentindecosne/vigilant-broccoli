@@ -2,8 +2,10 @@
 
 namespace App\Http\Livewire;
 
+use App\Models\Plant;
 use App\Models\Survey;
 use LivewireUI\Modal\ModalComponent;
+use Throwable;
 use WireUi\Traits\Actions;
 
 class SurveysDelete extends ModalComponent
@@ -21,6 +23,10 @@ class SurveysDelete extends ModalComponent
     {
         try {
             $survey = $this->survey;
+
+            $plant = new Plant();
+            $plant->deleteSpeciesList($survey->id);
+
             $this->survey->delete();
             $this->emit('refreshTable');
             $this->closeModal();
@@ -29,7 +35,7 @@ class SurveysDelete extends ModalComponent
                 $title = 'Survey deleted',
                 $description = 'Your survey was successfully deleted'
             );
-        } catch (\Throwable $e) {
+        } catch (Throwable $e) {
             $this->notification()->error(
                 $title = 'Error Notification',
                 $description = 'Problem deleting, try again later.'
